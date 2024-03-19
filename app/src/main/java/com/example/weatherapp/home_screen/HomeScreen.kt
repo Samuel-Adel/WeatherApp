@@ -9,8 +9,6 @@ import com.example.weatherapp.R
 
 class HomeScreen : Fragment() {
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
