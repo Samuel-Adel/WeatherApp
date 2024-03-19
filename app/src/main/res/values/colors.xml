@@ -2,4 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="gigas">#48319D</color>
+    <color name="eastBay">#3A3A6A</color>
 </resources>

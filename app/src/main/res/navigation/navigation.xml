@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/homeScreen">
+
+    <fragment
+        android:id="@+id/homeScreen"
+        android:name="com.example.weatherapp.home_screen.HomeScreen"
+        android:label="@string/homeScreen"
+        tools:layout="@layout/fragment_home_screen" />
+    <fragment
+        android:id="@+id/alarmScreen"
+        android:name="com.example.weatherapp.alarm_screen.AlarmScreen"
+        android:label="@string/AlarmScreen"
+        tools:layout="@layout/fragment_alarm_screen" />
+    <fragment
+        android:id="@+id/settingsScreen"
+        android:name="com.example.weatherapp.settings_screen.SettingsScreen"
+        android:label="@string/settingsScreen"
+        tools:layout="@layout/fragment_settings_screen" />
+</navigation>
