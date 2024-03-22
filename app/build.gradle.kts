@@ -68,4 +68,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     // Picasso
     implementation("com.squareup.picasso:picasso:2.8")
+    // swipe to refresh
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
+    // map
+    implementation("com.google.android.gms:play-services-location:21.2.0")
+
 }

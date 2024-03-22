@@ -4,6 +4,6 @@ import com.example.weatherapp.util.DataSourceState
 import kotlinx.coroutines.flow.Flow
 
 interface IDataSourceRepository {
-    fun getWeatherList(): Flow<DataSourceState>
+    fun getWeatherList(lat: Double, long: Double): Flow<DataSourceState>
 
 }

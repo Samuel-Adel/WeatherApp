@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 object RetrofitHelper {
-    private const val BASE_URL = "https://dummyjson.com/"
+    private const val BASE_URL = "https://api.openweathermap.org/"
     val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
