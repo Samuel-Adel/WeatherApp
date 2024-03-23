@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.example.weatherapp.network.RemoteDataSourceImpl
 import com.qamar.curvedbottomnaviagtion.CurvedBottomNavigation
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavBar = findViewById(R.id.bottomNavigation)
         bottomNavBar.setupNavController(navController)
         setupNavBar()
+
     }
 
     private fun setupNavBar() {

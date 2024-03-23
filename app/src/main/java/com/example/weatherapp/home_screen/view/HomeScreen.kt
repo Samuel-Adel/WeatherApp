@@ -1,87 +1,125 @@
 package com.example.weatherapp.home_screen.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.airbnb.lottie.LottieAnimationView
 import com.example.weatherapp.R
-import com.example.weatherapp.model.HourlyWeather
-import com.example.weatherapp.model.Weather
-import java.text.DecimalFormat
-import kotlin.random.Random
+import com.example.weatherapp.database.LocalDataSourceImpl
+import com.example.weatherapp.home_screen.viewModel.HomeScreenViewModel
+import com.example.weatherapp.home_screen.viewModel.HomeScreenViewModelFactory
+import com.example.weatherapp.model.DataSourceRepositoryImpl
+
+import com.example.weatherapp.model.WeatherData
+import com.example.weatherapp.network.RemoteDataSourceImpl
+import com.example.weatherapp.util.DataSourceState
+import com.example.weatherapp.util.TemperatureUnit
+import com.example.weatherapp.util.addDegreeSymbol
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class HomeScreen : Fragment() {
     private lateinit var refresher: SwipeRefreshLayout
     private lateinit var homeScreenHourlyWeatherAdapter: HourlyWeatherAdapter
     private lateinit var hourlyWeatherRV: RecyclerView
+    private lateinit var homeScreenViewModel: HomeScreenViewModel
+    private lateinit var progressBar: LottieAnimationView
+    private lateinit var locationName: TextView
+    private lateinit var temperature: TextView
+    private lateinit var weatherStatus: TextView
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home_screen, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-
         super.onViewCreated(view, savedInstanceState)
         refresher = view.findViewById(R.id.swipeAndRefresh)
-        homeScreenHourlyWeatherAdapter = HourlyWeatherAdapter()
         hourlyWeatherRV = view.findViewById(R.id.rvHourlyWeather)
-        hourlyWeatherRV.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        progressBar = view.findViewById(R.id.lottieAnimationLoading)
+        locationName = view.findViewById(R.id.txtVLocationName)
+        temperature = view.findViewById(R.id.txtVTemperature)
+        weatherStatus = view.findViewById(R.id.txtVWeatherStatus)
+        refresher.setColorSchemeResources(R.color.gigas)
 
-        hourlyWeatherRV.adapter = homeScreenHourlyWeatherAdapter
-        homeScreenHourlyWeatherAdapter.submitList(generateDummyHourlyWeatherList(24))
-//        homeScreenHourlyWeatherAdapter = HourlyWeatherAdapter()
-//        binding = DataBindingUtil.setContentView(requireActivity(), R.layout.fragment_home_screen)
-//        binding.lifecycleOwner = this
-//        binding.hourlyWeatherAdapter = homeScreenHourlyWeatherAdapter
-//        homeScreenHourlyWeatherAdapter.submitList(generateDummyHourlyWeatherList(24))
+        recyclerViewSetup()
+        viewModelSetup()
         refresher.setOnRefreshListener {
-
+            homeScreenViewModel.getWeatherData()
         }
+
     }
 
-    private fun generateDummyHourlyWeatherList(size: Int): List<HourlyWeather> {
-        val dummyList = mutableListOf<HourlyWeather>()
+    private fun updateTxtView(weatherData: WeatherData) {
+        locationName.text = weatherData.timezone.split("/").last()
+        temperature.text = weatherData.current.temperature.toString().addDegreeSymbol()
+        val description = weatherData.current.weather.first().description
+        val capitalizedDescription = description.split(" ").joinToString(" ") { word ->
+            word.replaceFirstChar { it.uppercase() }
+        }
+        weatherStatus.text = capitalizedDescription
+    }
 
-        // Create a DecimalFormat object to format temperature and feels_like values
-        val decimalFormat = DecimalFormat("#.##")
+    private fun recyclerViewSetup() {
+        homeScreenHourlyWeatherAdapter = HourlyWeatherAdapter()
+        hourlyWeatherRV.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        hourlyWeatherRV.adapter = homeScreenHourlyWeatherAdapter
+    }
 
-        // Generate dummy data for each HourlyWeather object
-        repeat(size) {
-            val dummyWeather = Weather(
-                id = Random.nextInt(200, 800),
-                main = "Clear",
-                description = "Clear sky",
-                icon = "01d"
+    private fun viewModelSetup() {
+        val homeScreenViewModelFactory = HomeScreenViewModelFactory(
+            DataSourceRepositoryImpl.getInstance(
+                LocalDataSourceImpl.getInstance(requireContext()),
+                RemoteDataSourceImpl.getInstance()
             )
-            val dummyHourlyWeather = HourlyWeather(
-                dt = System.currentTimeMillis() + it * 3600000,
-                temp = decimalFormat.format(Random.nextDouble(20.0, 30.0)).toDouble(),
-                feels_like = decimalFormat.format(Random.nextDouble(18.0, 28.0)).toDouble(),
-                pressure = Random.nextInt(900, 1100),
-                humidity = Random.nextInt(30, 70),
-                dew_point = decimalFormat.format(Random.nextDouble(10.0, 20.0)).toDouble(),
-                uvi = decimalFormat.format(Random.nextDouble(0.0, 10.0)).toDouble(),
-                clouds = Random.nextInt(0, 100),
-                visibility = Random.nextInt(1000, 10000),
-                wind_speed = decimalFormat.format(Random.nextDouble(1.0, 10.0)).toDouble(),
-                wind_deg = Random.nextInt(0, 360),
-                wind_gust = decimalFormat.format(Random.nextDouble(1.0, 15.0)).toDouble(),
-                weather = listOf(dummyWeather),
-                pop = Random.nextInt(0, 100)
-            )
-            dummyList.add(dummyHourlyWeather)
+        )
+        homeScreenViewModel =
+            ViewModelProvider(this, homeScreenViewModelFactory)[HomeScreenViewModel::class.java]
+        homeScreenViewModel.getWeatherData()
+        lifecycleScope.launch {
+            homeScreenViewModel.weatherData.collectLatest { result ->
+                if (result is DataSourceState.Loading) {
+                    refresher.isRefreshing = false
+                    progressBar.visibility = View.VISIBLE
+                } else {
+                    refresher.isRefreshing = false
+                    progressBar.visibility = View.GONE
+                }
+                if (result is DataSourceState.Success<*>) {
+                    if (result.data is WeatherData) {
+                        updateTxtView(result.data)
+                        homeScreenHourlyWeatherAdapter.submitList(
+                            result.data.hourly
+                        )
+                    } else {
+                        Toast.makeText(
+                            requireContext(), R.string.wrong_data_submitted, Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else if (result is DataSourceState.Failure) {
+                    progressBar.visibility = View.GONE
+                    Log.i("WeatherResponse", result.msg.message.toString())
+                    Toast.makeText(
+                        requireContext(), result.msg.message.toString(), Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            }
         }
 
-        return dummyList
     }
 }

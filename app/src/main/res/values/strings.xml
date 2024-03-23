@@ -2,10 +2,10 @@
     <string name="app_name">WeatherApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="AlarmScreen">Alarm Screen</string>
-    <string name="homeScreen">Home Screen</string>
-    <string name="settingsScreen">Settings Screen</string>
-    <string name="favouriteScreen">Favourite Screen</string>
+    <string name="alarm_screen">Alarm Screen</string>
+    <string name="home_screen">Home Screen</string>
+    <string name="settings_screen">Settings Screen</string>
+    <string name="favourite_screen">Favourite Screen</string>
 
     <string name="settings">Settings</string>
     <string name="favourite">Favourite</string>
@@ -13,4 +13,8 @@
     <string name="alarm">Alarms</string>
     <string name="unknown">Unknown</string>
     <string name="default_temp">No°C</string>
+    <string name="default_lat">30.0444</string>
+    <string name="default_lon">31.2357</string>
+    <string name="wrong_data_submitted">Wrong data submitted</string>
+    <string name="weather_status_image">Weather status image</string>
 </resources>

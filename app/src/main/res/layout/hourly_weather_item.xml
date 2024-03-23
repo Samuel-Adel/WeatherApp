@@ -14,15 +14,17 @@
         android:id="@+id/cvHourlyWeatherItem"
         android:layout_width="60dp"
         android:layout_height="160dp"
-        android:layout_marginEnd="10dp"
-        android:background="@color/black"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
+        android:background="@drawable/hourly_weather_gradient_background"
         android:elevation="16dp"
         app:cardCornerRadius="30dp"
         app:cardElevation="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/hourly_weather_gradient_background">
 
             <TextView
                 android:id="@+id/textHour"
@@ -37,7 +39,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:timestampToHour="@{weatherModel.dt}"
+                app:timestampToHour="@{weatherModel.timestamp}"
 
                 />
 
@@ -48,7 +50,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/tornado"
+                android:contentDescription="@string/weather_status_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textHour"
@@ -62,7 +64,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:text="@{String.valueOf(weatherModel.temp)}"
+                android:text="@{String.valueOf(weatherModel.temperature)}"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"

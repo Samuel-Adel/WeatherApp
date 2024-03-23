@@ -8,18 +8,18 @@
     <fragment
         android:id="@+id/homeScreen"
         android:name="com.example.weatherapp.home_screen.view.HomeScreen"
-        android:label="@string/homeScreen"
+        android:label="@string/home_screen"
         tools:layout="@layout/fragment_home_screen" />
 
     <fragment
         android:id="@+id/alarmScreen"
         android:name="com.example.weatherapp.alarm_screen.AlarmScreen"
-        android:label="@string/AlarmScreen"
+        android:label="@string/alarm_screen"
         tools:layout="@layout/fragment_alarm_screen" />
     <fragment
         android:id="@+id/settingsScreen"
         android:name="com.example.weatherapp.settings_screen.SettingsScreen"
-        android:label="@string/settingsScreen"
+        android:label="@string/settings_screen"
         tools:layout="@layout/fragment_settings_screen" />
     <fragment
         android:id="@+id/favouriteScreen"

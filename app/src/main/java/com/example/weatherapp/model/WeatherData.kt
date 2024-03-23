@@ -1,90 +1,110 @@
 package com.example.weatherapp.model
 
+import com.google.gson.annotations.SerializedName
+
 data class WeatherData(
-    val lat: Double,
-    val lon: Double,
-    val timezone: String,
-    val timezone_offset: Int,
-    val current: CurrentWeather,
-    val minutely: List<MinutelyWeather>,
-    val hourly: List<HourlyWeather>,
-    val daily: List<DailyWeather>
+    @SerializedName("lat") val latitude: Double,
+    @SerializedName("lon") val longitude: Double,
+    @SerializedName("timezone") val timezone: String,
+    @SerializedName("timezone_offset") val timezoneOffset: Int,
+    @SerializedName("current") val current: CurrentWeather,
+    @SerializedName("minutely") val minutely: List<MinutelyData>,
+    @SerializedName("hourly") val hourly: List<HourlyWeather>,
+    @SerializedName("daily") val daily: List<DailyData>,
+    @SerializedName("alerts") val alerts: List<Alert>
 )
 
 data class CurrentWeather(
-    val dt: Long,
-    val sunrise: Long,
-    val sunset: Long,
-    val temp: Double,
-    val feels_like: Double,
-    val pressure: Int,
-    val humidity: Int,
-    val dew_point: Double,
-    val uvi: Double,
-    val clouds: Int,
-    val visibility: Int,
-    val wind_speed: Double,
-    val wind_deg: Int,
-    val weather: List<Weather>
+    @SerializedName("dt") val timestamp: Long,
+    @SerializedName("sunrise") val sunrise: Long,
+    @SerializedName("sunset") val sunset: Long,
+    @SerializedName("temp") val temperature: Double,
+    @SerializedName("feels_like") val feelsLike: Double,
+    @SerializedName("pressure") val pressure: Int,
+    @SerializedName("humidity") val humidity: Int,
+    @SerializedName("dew_point") val dewPoint: Double,
+    @SerializedName("uvi") val uvIndex: Double,
+    @SerializedName("clouds") val clouds: Int,
+    @SerializedName("visibility") val visibility: Int,
+    @SerializedName("wind_speed") val windSpeed: Double,
+    @SerializedName("wind_deg") val windDegree: Int,
+    @SerializedName("wind_gust") val windGust: Double,
+    @SerializedName("weather") val weather: List<WeatherCondition>
 )
 
-data class MinutelyWeather(
-    val dt: Long,
-    val precipitation: Int
+data class MinutelyData(
+    @SerializedName("dt") val timestamp: Long,
+    @SerializedName("precipitation") val precipitation: Int
 )
 
 data class HourlyWeather(
-    val dt: Long,
-    val temp: Double,
-    val feels_like: Double,
-    val pressure: Int,
-    val humidity: Int,
-    val dew_point: Double,
-    val uvi: Double,
-    val clouds: Int,
-    val visibility: Int,
-    val wind_speed: Double,
-    val wind_deg: Int,
-    val wind_gust: Double,
-    val weather: List<Weather>,
-    val pop: Int
+    @SerializedName("dt") val timestamp: Long,
+    @SerializedName("temp") val temperature: Double,
+    @SerializedName("feels_like") val feelsLike: Double,
+    @SerializedName("pressure") val pressure: Int,
+    @SerializedName("humidity") val humidity: Int,
+    @SerializedName("dew_point") val dewPoint: Double,
+    @SerializedName("uvi") val uvIndex: Double,
+    @SerializedName("clouds") val clouds: Int,
+    @SerializedName("visibility") val visibility: Int,
+    @SerializedName("wind_speed") val windSpeed: Double,
+    @SerializedName("wind_deg") val windDegree: Int,
+    @SerializedName("wind_gust") val windGust: Double,
+    @SerializedName("weather") val weather: List<WeatherCondition>,
+    @SerializedName("pop") val pop: Double
 )
 
-data class DailyWeather(
-    val dt: Long,
-    val sunrise: Long,
-    val sunset: Long,
-    val moonrise: Long,
-    val moonset: Long,
-    val moon_phase: Double,
-    val summary: String,
-    val temp: Temperature,
-    val feels_like: Temperature,
-    val pressure: Int,
-    val humidity: Int,
-    val dew_point: Double,
-    val wind_speed: Double,
-    val wind_deg: Int,
-    val wind_gust: Double,
-    val weather: List<Weather>,
-    val clouds: Int,
-    val pop: Int,
-    val rain: Double,
-    val uvi: Double
+data class DailyData(
+    @SerializedName("dt") val timestamp: Long,
+    @SerializedName("sunrise") val sunrise: Long,
+    @SerializedName("sunset") val sunset: Long,
+    @SerializedName("moonrise") val moonrise: Long,
+    @SerializedName("moonset") val moonSet: Long,
+    @SerializedName("moon_phase") val moonPhase: Double,
+    @SerializedName("summary") val summary: String,
+    @SerializedName("temp") val temperature: TemperatureData,
+    @SerializedName("feels_like") val feelsLike: FeelsLikeData,
+    @SerializedName("pressure") val pressure: Int,
+    @SerializedName("humidity") val humidity: Int,
+    @SerializedName("dew_point") val dewPoint: Double,
+    @SerializedName("wind_speed") val windSpeed: Double,
+    @SerializedName("wind_deg") val windDegree: Int,
+    @SerializedName("wind_gust") val windGust: Double,
+    @SerializedName("weather") val weather: List<WeatherCondition>,
+    @SerializedName("clouds") val clouds: Int,
+    @SerializedName("pop") val pop: Double,
+    @SerializedName("rain") val rain: Double?,
+    @SerializedName("uvi") val uvIndex: Double
 )
 
-data class Temperature(
-    val day: Double,
-    val min: Double,
-    val max: Double,
-    val night: Double,
-    val eve: Double,
-    val morn: Double
+data class TemperatureData(
+    @SerializedName("day") val day: Double,
+    @SerializedName("min") val min: Double,
+    @SerializedName("max") val max: Double,
+    @SerializedName("night") val night: Double,
+    @SerializedName("eve") val evening: Double,
+    @SerializedName("morn") val morning: Double
 )
 
-data class Weather(
-    val id: Int,
-    val main: String,
-    val description: String,
-    val icon: String
+data class FeelsLikeData(
+    @SerializedName("day") val day: Double,
+    @SerializedName("night") val night: Double,
+    @SerializedName("eve") val evening: Double,
+    @SerializedName("morn") val morning: Double
+)
+
+data class WeatherCondition(
+    @SerializedName("id") val id: Int,
+    @SerializedName("main") val main: String,
+    @SerializedName("description") val description: String,
+    @SerializedName("icon") val icon: String
+)
+
+data class Alert(
+    @SerializedName("sender_name") val senderName: String,
+    @SerializedName("event") val event: String,
+    @SerializedName("start") val start: Long,
+    @SerializedName("end") val end: Long,
+    @SerializedName("description") val description: String,
+    @SerializedName("tags") val tags: List<String>
 )

@@ -57,6 +57,9 @@ dependencies {
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    //GSON
+    implementation("com.google.code.gson:gson:2.10.1")
     //Room
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("androidx.room:room-runtime:2.6.1")
@@ -72,5 +75,7 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
     // map
     implementation("com.google.android.gms:play-services-location:21.2.0")
+    // lottie
+    implementation("com.airbnb.android:lottie:6.0.0")
 
 }

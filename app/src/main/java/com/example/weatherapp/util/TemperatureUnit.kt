@@ -6,11 +6,14 @@ enum class TemperatureUnit {
     FAHRENHEIT
 }
 
-class Temperature(private val value: Double, private val unit: TemperatureUnit) {
+object Temperature {
 
-    fun convertTo(targetUnit: TemperatureUnit): Temperature {
-        val newValue = convertValue(value, unit, targetUnit)
-        return Temperature(newValue, targetUnit)
+    fun convertTo(
+        value: Double,
+        currentUnit: TemperatureUnit,
+        targetUnit: TemperatureUnit
+    ): String {
+        return convertValue(value, currentUnit, targetUnit).toString()
     }
 
     private fun convertValue(
