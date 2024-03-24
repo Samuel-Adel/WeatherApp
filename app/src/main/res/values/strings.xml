@@ -19,5 +19,14 @@
     <string name="weather_status_image">Weather status image</string>
     <string name="temperature_placeholder">%d°</string>
     <string name="ThreeLetters">APC</string>
+    <string name="gps">GPS</string>
+    <string name="map">Map</string>
+    <string name="submit">Submit</string>
+    <string name="location">Location</string>
+    <string name="notification">Notification</string>
+    <string name="initial_setup">Initial Setup</string>
+    <string name="pls_turn_on_location">Please turn on Location</string>
+    <string name="this_location_doesnot_contain_data">"This Location doesn't contain data for Weather!"</string>
+    <string name="google_map_api_key">AIzaSyA-H-9X4VEfAPOpScnaMo6zxpouYGrRE50</string>
 
 </resources>

@@ -18,10 +18,9 @@ class HomeScreenViewModel(private val repo: IDataSourceRepository) : ViewModel()
         get() = _weatherData
 
 
-
-     fun getWeatherData() {
+    fun getWeatherData(lat: Double, lon: Double) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.getWeatherList(0.0, 0.0)
+            repo.getWeatherList(lat, lon)
                 .catch { e ->
                     _weatherData.value = DataSourceState.Failure(e)
                 }

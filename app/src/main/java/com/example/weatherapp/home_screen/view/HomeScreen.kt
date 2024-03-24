@@ -1,14 +1,27 @@
 package com.example.weatherapp.home_screen.view
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.PopupMenu
+import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,12 +36,30 @@ import com.example.weatherapp.model.DataSourceRepositoryImpl
 import com.example.weatherapp.model.WeatherData
 import com.example.weatherapp.network.RemoteDataSourceImpl
 import com.example.weatherapp.util.DataSourceState
+import com.example.weatherapp.util.GPSHandler
+import com.example.weatherapp.util.REQUEST_LOCATION_CODE
 import com.example.weatherapp.util.WeatherHandlingHelper
 import com.example.weatherapp.util.addDegreeSymbol
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.io.IOException
 
-class HomeScreen : Fragment() {
+@Suppress("DEPRECATION")
+class HomeScreen : Fragment(), OnMapReadyCallback {
     private lateinit var refresher: SwipeRefreshLayout
     private lateinit var homeScreenHourlyWeatherAdapter: HourlyWeatherAdapter
     private lateinit var homeScreenDailyWeatherAdapter: DaysWeatherAdapter
@@ -40,7 +71,12 @@ class HomeScreen : Fragment() {
     private lateinit var temperature: TextView
     private lateinit var weatherStatus: TextView
     private lateinit var weatherStatusImg: ImageView
-
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private var mGoogleMap: GoogleMap? = null
+    private lateinit var geocoder: Geocoder
+    private lateinit var mapFragment: FragmentContainerView
+    private lateinit var mapSupportFragment: SupportMapFragment
+    private lateinit var mapSubmitButton: Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -50,7 +86,47 @@ class HomeScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        refresher = view.findViewById(R.id.swipeAndRefresh)
+        uiSetup(view)
+        recyclerViewsSetup()
+        viewModelSetup()
+        showLocationDialog()
+        mapSetup()
+    }
+
+    private fun mapSetup() {
+        geocoder = Geocoder(requireContext())
+        mapSupportFragment =
+            childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
+        mapSupportFragment.getMapAsync(this)
+
+    }
+
+    private fun showLocationDialog() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        val inflater = layoutInflater
+        val dialogView = inflater.inflate(R.layout.gps_map_dialog, null)
+        builder.setView(dialogView)
+        val dialog = builder.create()
+        dialog.setIcon(R.drawable.light_foggy)
+        dialog.show()
+        dialog.setCanceledOnTouchOutside(false)
+        val rgGpsOrMap = dialogView.findViewById<RadioGroup>(R.id.rgGpsOrMap)
+        dialogView.findViewById<Button>(R.id.btnSubmit).setOnClickListener {
+            when (rgGpsOrMap.checkedRadioButtonId) {
+                R.id.radioOpenMap -> {
+                }
+
+                else -> {
+                    onGPsChosen()
+                    dialog.cancel()
+                }
+            }
+
+        }
+    }
+
+    private fun uiSetup(view: View) {
+        mapSubmitButton = view.findViewById(R.id.mapSubmitButton)
         hourlyWeatherRV = view.findViewById(R.id.rvHourlyWeather)
         daysWeatherRV = view.findViewById(R.id.rvDaysWeather)
         progressBar = view.findViewById(R.id.lottieAnimationLoading)
@@ -58,14 +134,14 @@ class HomeScreen : Fragment() {
         temperature = view.findViewById(R.id.txtVTemperature)
         weatherStatus = view.findViewById(R.id.txtVWeatherStatus)
         weatherStatusImg = view.findViewById(R.id.imgWeatherStatus)
+        refresher = view.findViewById(R.id.swipeAndRefresh)
         refresher.setColorSchemeResources(R.color.gigas)
-
-        recyclerViewsSetup()
-        viewModelSetup()
         refresher.setOnRefreshListener {
-            homeScreenViewModel.getWeatherData()
+            //  homeScreenViewModel.getWeatherData()
         }
-
+        mapSubmitButton.setOnClickListener {
+            mapSubmitButton.visibility = View.GONE
+        }
     }
 
     private fun updateTxtView(weatherData: WeatherData) {
@@ -92,6 +168,7 @@ class HomeScreen : Fragment() {
     }
 
     private fun viewModelSetup() {
+
         val homeScreenViewModelFactory = HomeScreenViewModelFactory(
             DataSourceRepositoryImpl.getInstance(
                 LocalDataSourceImpl.getInstance(requireContext()),
@@ -100,7 +177,10 @@ class HomeScreen : Fragment() {
         )
         homeScreenViewModel =
             ViewModelProvider(this, homeScreenViewModelFactory)[HomeScreenViewModel::class.java]
-        homeScreenViewModel.getWeatherData()
+    }
+
+    private fun fetchingDataSetup(lat: Double, lon: Double) {
+        homeScreenViewModel.getWeatherData(lat, lon)
         lifecycleScope.launch {
             homeScreenViewModel.weatherData.collectLatest { result ->
                 if (result is DataSourceState.Loading && !refresher.isRefreshing) {
@@ -114,11 +194,11 @@ class HomeScreen : Fragment() {
                         WeatherHandlingHelper.sunrise = result.data.current.sunrise
                         WeatherHandlingHelper.sunset = result.data.current.sunset
                         updateTxtView(result.data)
-                        homeScreenDailyWeatherAdapter.submitList(result.data.daily)
+                        val modifiedList = result.data.daily.drop(1)
+                        homeScreenDailyWeatherAdapter.submitList(modifiedList)
                         homeScreenHourlyWeatherAdapter.submitList(
                             result.data.hourly
                         )
-
                     } else {
                         Toast.makeText(
                             requireContext(), R.string.wrong_data_submitted, Toast.LENGTH_SHORT
@@ -128,12 +208,114 @@ class HomeScreen : Fragment() {
                     progressBar.visibility = View.GONE
                     Log.i("WeatherResponse", result.msg.message.toString())
                     Toast.makeText(
-                        requireContext(), result.msg.message.toString(), Toast.LENGTH_SHORT
+                        requireContext(),
+                        R.string.this_location_doesnot_contain_data,
+                        Toast.LENGTH_SHORT
                     ).show()
                 }
 
             }
         }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Log.i("Permissions", "onRequestPermissionsResult: ${grantResults[0]}")
+        Log.i("Permissions", "onRequestPermissionsResult: $requestCode")
+        if (requestCode == REQUEST_LOCATION_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                checkAndEnableLocation()
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getFreshLocation() {
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireActivity())
+        fusedLocationProviderClient.requestLocationUpdates(LocationRequest.Builder(0).apply {
+            setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+        }.build(), object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                super.onLocationResult(locationResult)
+                val location = locationResult.lastLocation
+                if (location != null) {
+                    Log.i("FreshLocation", "onLocationResult: ")
+                    fetchingDataSetup(location.longitude, location.latitude)
+                    fusedLocationProviderClient.removeLocationUpdates(this)
+                }
+            }
+        }, Looper.myLooper()
+        )
+    }
+
+    private fun onGPsChosen() {
+        if (GPSHandler.checkPermission(requireContext())) {
+            checkAndEnableLocation()
+        } else {
+            requestPermissions(
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ), REQUEST_LOCATION_CODE
+            )
+        }
+    }
+
+    private fun checkAndEnableLocation() {
+        if (GPSHandler.locationIsEnabled(requireActivity())) {
+            getFreshLocation()
+        } else {
+            GPSHandler.enableLocationServices(requireContext())
+            getFreshLocation()
+        }
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mGoogleMap = googleMap
+        val cairo = LatLng(30.0444, 31.2357)
+        mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(cairo, 10f))
+        mGoogleMap?.setOnMapClickListener { latLng ->
+            Log.i("Google MAps", "Clicked: ")
+            addMarker(latLng)
+
+        }
+    }
+
+    private fun addMarker(latLng: LatLng) {
+        mGoogleMap?.clear()
+        getAddressFromCoordinates(latLng.latitude, latLng.longitude) {
+            mGoogleMap?.addMarker(
+                MarkerOptions()
+                    .position(latLng)
+                    .title(it)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.flag_marker))
+                    .draggable(true)
+            )
+        }
+    }
+
+    private fun getAddressFromCoordinates(
+        latitude: Double,
+        longitude: Double,
+        callback: (String) -> Unit
+    ) {
+        try {
+            val addresses: List<Address>? = geocoder.getFromLocation(latitude, longitude, 1)
+            if (!addresses.isNullOrEmpty()) {
+                val address = addresses[0]
+                val addressText = address.getAddressLine(0)
+                callback(addressText)
+            } else {
+                Log.i("Google MAps", "No address found for the provided location")
+            }
+        } catch (e: IOException) {
+            Log.i("Google MAps", "Error fetching address: ${e.message}")
+        }
 
     }
+
 }
