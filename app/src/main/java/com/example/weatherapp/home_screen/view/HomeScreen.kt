@@ -23,6 +23,7 @@ import com.example.weatherapp.model.DataSourceRepositoryImpl
 import com.example.weatherapp.model.WeatherData
 import com.example.weatherapp.network.RemoteDataSourceImpl
 import com.example.weatherapp.util.DataSourceState
+import com.example.weatherapp.util.SunriseSunset
 import com.example.weatherapp.util.TemperatureUnit
 import com.example.weatherapp.util.addDegreeSymbol
 import kotlinx.coroutines.flow.collectLatest
@@ -102,6 +103,8 @@ class HomeScreen : Fragment() {
                 if (result is DataSourceState.Success<*>) {
                     if (result.data is WeatherData) {
                         updateTxtView(result.data)
+                        SunriseSunset.sunrise=result.data.current.sunrise
+                        SunriseSunset.sunset=result.data.current.sunset
                         homeScreenHourlyWeatherAdapter.submitList(
                             result.data.hourly
                         )
