@@ -5,27 +5,44 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.example.weatherapp.R
+import com.example.weatherapp.model.DailyData
 import com.example.weatherapp.model.HourlyWeather
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import com.example.weatherapp.model.TemperatureData
+import java.util.*
 
-@BindingAdapter("timestampToHour")
-fun convertTimestampToHour(textView: TextView, timestamp: Long) {
-    val date = Date(timestamp * 1000L)
-    val sdf =
-        SimpleDateFormat("h a", Locale.getDefault()) // "h a" for 12-hour format with AM/PM
-    textView.text = sdf.format(date)
+@BindingAdapter("timestampToDayOfWeek")
+fun getDayOfWeek(textView: TextView, timestamp: Long) {
+    val calendar = Calendar.getInstance().apply {
+        timeInMillis = timestamp * 1000 // Convert timestamp to milliseconds
+    }
+
+    val dayName = when (calendar.get(Calendar.DAY_OF_WEEK)) {
+        Calendar.SUNDAY -> "Sun"
+        Calendar.MONDAY -> "Mon"
+        Calendar.TUESDAY -> "Tue"
+        Calendar.WEDNESDAY -> "Wed"
+        Calendar.THURSDAY -> "Thu"
+        Calendar.FRIDAY -> "Fri"
+        Calendar.SATURDAY -> "Sat"
+        else -> "Unknown"
+    }
+    textView.text = dayName
 }
 
-@BindingAdapter("weatherMainToImgFromHourlyWeather")
-fun getWeatherImage(img: ImageView, weatherModel: HourlyWeather) {
+@BindingAdapter("minMaxTempFormat")
+
+fun formatTemperature(textView: TextView, temp: TemperatureData) {
+    textView.text = "${temp.max.toInt()}/${temp.min.toInt()}°"
+}
+
+@BindingAdapter("weatherMainToImgFromDailyWeather")
+fun getWeatherImage(img: ImageView, weatherModel: DailyData) {
     Log.i("WeatheerSa", "getWeatherImage: ")
     val currentTime = weatherModel.timestamp
-    val sunriseTime = WeatherHandlingHelper.sunrise
-    val sunsetTime = WeatherHandlingHelper.sunset
+    val sunriseTime = weatherModel.sunrise
+    val sunsetTime = weatherModel.sunset
 
-    val isDayTime = currentTime in sunriseTime!! until sunsetTime!!
+    val isDayTime = currentTime in sunriseTime until sunsetTime
 
     val weatherMain = weatherModel.weather.first().main
     val imgSelected = when {
@@ -74,10 +91,4 @@ fun getWeatherImage(img: ImageView, weatherModel: HourlyWeather) {
         }
     }
     img.setImageResource(imgSelected)
-}
-
-@BindingAdapter("tempFormat")
-
-fun formatTemperature(textView: TextView, temp: Double) {
-    textView.text = "${temp.toInt()}°"
 }

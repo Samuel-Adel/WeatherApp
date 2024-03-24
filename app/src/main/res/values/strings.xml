@@ -17,4 +17,7 @@
     <string name="default_lon">31.2357</string>
     <string name="wrong_data_submitted">Wrong data submitted</string>
     <string name="weather_status_image">Weather status image</string>
+    <string name="temperature_placeholder">%d°</string>
+    <string name="ThreeLetters">APC</string>
+
 </resources>

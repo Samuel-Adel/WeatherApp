@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -23,8 +24,7 @@ import com.example.weatherapp.model.DataSourceRepositoryImpl
 import com.example.weatherapp.model.WeatherData
 import com.example.weatherapp.network.RemoteDataSourceImpl
 import com.example.weatherapp.util.DataSourceState
-import com.example.weatherapp.util.SunriseSunset
-import com.example.weatherapp.util.TemperatureUnit
+import com.example.weatherapp.util.WeatherHandlingHelper
 import com.example.weatherapp.util.addDegreeSymbol
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -32,12 +32,15 @@ import kotlinx.coroutines.launch
 class HomeScreen : Fragment() {
     private lateinit var refresher: SwipeRefreshLayout
     private lateinit var homeScreenHourlyWeatherAdapter: HourlyWeatherAdapter
+    private lateinit var homeScreenDailyWeatherAdapter: DaysWeatherAdapter
     private lateinit var hourlyWeatherRV: RecyclerView
+    private lateinit var daysWeatherRV: RecyclerView
     private lateinit var homeScreenViewModel: HomeScreenViewModel
     private lateinit var progressBar: LottieAnimationView
     private lateinit var locationName: TextView
     private lateinit var temperature: TextView
     private lateinit var weatherStatus: TextView
+    private lateinit var weatherStatusImg: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -50,13 +53,15 @@ class HomeScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         refresher = view.findViewById(R.id.swipeAndRefresh)
         hourlyWeatherRV = view.findViewById(R.id.rvHourlyWeather)
+        daysWeatherRV = view.findViewById(R.id.rvDaysWeather)
         progressBar = view.findViewById(R.id.lottieAnimationLoading)
         locationName = view.findViewById(R.id.txtVLocationName)
         temperature = view.findViewById(R.id.txtVTemperature)
         weatherStatus = view.findViewById(R.id.txtVWeatherStatus)
+        weatherStatusImg = view.findViewById(R.id.imgWeatherStatus)
         refresher.setColorSchemeResources(R.color.gigas)
 
-        recyclerViewSetup()
+        recyclerViewsSetup()
         viewModelSetup()
         refresher.setOnRefreshListener {
             homeScreenViewModel.getWeatherData()
@@ -66,7 +71,8 @@ class HomeScreen : Fragment() {
 
     private fun updateTxtView(weatherData: WeatherData) {
         locationName.text = weatherData.timezone.split("/").last()
-        temperature.text = weatherData.current.temperature.toString().addDegreeSymbol()
+        temperature.text = weatherData.current.temperature.toInt().toString().addDegreeSymbol()
+        weatherStatusImg.setImageResource(WeatherHandlingHelper.getWeatherImage(weatherData.current))
         val description = weatherData.current.weather.first().description
         val capitalizedDescription = description.split(" ").joinToString(" ") { word ->
             word.replaceFirstChar { it.uppercase() }
@@ -74,10 +80,15 @@ class HomeScreen : Fragment() {
         weatherStatus.text = capitalizedDescription
     }
 
-    private fun recyclerViewSetup() {
+    private fun recyclerViewsSetup() {
         homeScreenHourlyWeatherAdapter = HourlyWeatherAdapter()
+        homeScreenDailyWeatherAdapter = DaysWeatherAdapter()
         hourlyWeatherRV.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        daysWeatherRV.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        daysWeatherRV.adapter = homeScreenDailyWeatherAdapter
+        daysWeatherRV.isNestedScrollingEnabled = false
         hourlyWeatherRV.adapter = homeScreenHourlyWeatherAdapter
     }
 
@@ -93,8 +104,7 @@ class HomeScreen : Fragment() {
         homeScreenViewModel.getWeatherData()
         lifecycleScope.launch {
             homeScreenViewModel.weatherData.collectLatest { result ->
-                if (result is DataSourceState.Loading) {
-                    refresher.isRefreshing = false
+                if (result is DataSourceState.Loading && !refresher.isRefreshing) {
                     progressBar.visibility = View.VISIBLE
                 } else {
                     refresher.isRefreshing = false
@@ -102,9 +112,10 @@ class HomeScreen : Fragment() {
                 }
                 if (result is DataSourceState.Success<*>) {
                     if (result.data is WeatherData) {
+                        WeatherHandlingHelper.sunrise = result.data.current.sunrise
+                        WeatherHandlingHelper.sunset = result.data.current.sunset
                         updateTxtView(result.data)
-                        SunriseSunset.sunrise=result.data.current.sunrise
-                        SunriseSunset.sunset=result.data.current.sunset
+                        homeScreenDailyWeatherAdapter.submitList(result.data.daily)
                         homeScreenHourlyWeatherAdapter.submitList(
                             result.data.hourly
                         )

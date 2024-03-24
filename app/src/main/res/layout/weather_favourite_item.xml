@@ -36,7 +36,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textWeatherDegree" />
 
     <ImageView
-        android:id="@+id/imgWeatherStatus"
+        android:id="@+id/imgFavWeatherStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="174dp"
@@ -60,5 +60,5 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgWeatherStatus" />
+        app:layout_constraintTop_toBottomOf="@+id/imgFavWeatherStatus" />
 </androidx.constraintlayout.widget.ConstraintLayout>
