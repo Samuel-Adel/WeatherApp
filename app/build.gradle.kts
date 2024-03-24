@@ -75,6 +75,9 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
     // map
     implementation("com.google.android.gms:play-services-location:21.2.0")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.libraries.places:places:3.4.0")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
     // lottie
     implementation("com.airbnb.android:lottie:6.0.0")
 

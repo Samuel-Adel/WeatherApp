@@ -20,7 +20,6 @@ import com.example.weatherapp.database.LocalDataSourceImpl
 import com.example.weatherapp.home_screen.viewModel.HomeScreenViewModel
 import com.example.weatherapp.home_screen.viewModel.HomeScreenViewModelFactory
 import com.example.weatherapp.model.DataSourceRepositoryImpl
-
 import com.example.weatherapp.model.WeatherData
 import com.example.weatherapp.network.RemoteDataSourceImpl
 import com.example.weatherapp.util.DataSourceState
@@ -119,6 +118,7 @@ class HomeScreen : Fragment() {
                         homeScreenHourlyWeatherAdapter.submitList(
                             result.data.hourly
                         )
+
                     } else {
                         Toast.makeText(
                             requireContext(), R.string.wrong_data_submitted, Toast.LENGTH_SHORT
