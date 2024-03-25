@@ -13,13 +13,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.PopupMenu
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
@@ -53,7 +50,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -77,6 +73,9 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
     private lateinit var mapFragment: FragmentContainerView
     private lateinit var mapSupportFragment: SupportMapFragment
     private lateinit var mapSubmitButton: Button
+    private var lat: Double? = null
+    private var lon: Double? = null
+    private var loaded: Boolean = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -89,8 +88,9 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
         uiSetup(view)
         recyclerViewsSetup()
         viewModelSetup()
-        showLocationDialog()
-        mapSetup()
+        // showLocationDialog()
+        onGPsChosen()
+        //  mapSetup()
     }
 
     private fun mapSetup() {
@@ -209,7 +209,7 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
                     Log.i("WeatherResponse", result.msg.message.toString())
                     Toast.makeText(
                         requireContext(),
-                        R.string.this_location_doesnot_contain_data,
+                        R.string.this_location_does_not_contain_data,
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -245,6 +245,9 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
                 if (location != null) {
                     Log.i("FreshLocation", "onLocationResult: ")
                     fetchingDataSetup(location.longitude, location.latitude)
+                    lon = location.longitude
+                    lat = location.latitude
+                    loaded = true
                     fusedLocationProviderClient.removeLocationUpdates(this)
                 }
             }

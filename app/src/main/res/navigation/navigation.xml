@@ -17,13 +17,12 @@
         android:label="@string/alarm_screen"
         tools:layout="@layout/fragment_alarm_screen" />
     <fragment
-        android:id="@+id/settingsScreen"
-        android:name="com.example.weatherapp.settings_screen.SettingsScreen"
-        android:label="@string/settings_screen"
-        tools:layout="@layout/fragment_settings_screen" />
-    <fragment
         android:id="@+id/favouriteScreen"
         android:name="com.example.weatherapp.favourite_screen.FavouriteScreen"
         android:label="fragment_favourite_screen"
         tools:layout="@layout/fragment_favourite_screen" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.weatherapp.settings_screen.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

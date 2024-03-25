@@ -6,7 +6,6 @@
     <string name="home_screen">Home Screen</string>
     <string name="settings_screen">Settings Screen</string>
     <string name="favourite_screen">Favourite Screen</string>
-
     <string name="settings">Settings</string>
     <string name="favourite">Favourite</string>
     <string name="home">Home</string>
@@ -23,10 +22,29 @@
     <string name="map">Map</string>
     <string name="submit">Submit</string>
     <string name="location">Location</string>
-    <string name="notification">Notification</string>
     <string name="initial_setup">Initial Setup</string>
     <string name="pls_turn_on_location">Please turn on Location</string>
-    <string name="this_location_doesnot_contain_data">"This Location doesn't contain data for Weather!"</string>
+    <string name="this_location_does_not_contain_data">"This Location doesn't contain data for Weather!"</string>
     <string name="google_map_api_key">AIzaSyA-H-9X4VEfAPOpScnaMo6zxpouYGrRE50</string>
+    <!-- Preference Titles -->
+    <string name="weather">Messages</string>
+    <string name="app_settings">App Settings</string>
+    <string name="weather_settings">Weather</string>
+
+
+    <string name="sync_header">Sync</string>
+    <string name="notification">Notification</string>
+    <string name="allow_notification">Allow notification </string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
 </resources>

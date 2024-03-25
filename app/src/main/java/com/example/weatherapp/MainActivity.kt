@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         )
         bottomNavBar.add(
             CurvedBottomNavigation.Model(
-                R.id.settingsScreen, getString(R.string.settings), R.drawable.setting_icon
+                R.id.settingsFragment, getString(R.string.settings), R.drawable.setting_icon
             )
         )
         bottomNavBar.setOnClickMenuListener {
