@@ -223,8 +223,8 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        Log.i("Permissions", "onRequestPermissionsResult: ${grantResults[0]}")
-        Log.i("Permissions", "onRequestPermissionsResult: $requestCode")
+//        Log.i("Permissions", "onRequestPermissionsResult: ${grantResults[0]}")
+//        Log.i("Permissions", "onRequestPermissionsResult: $requestCode")
         if (requestCode == REQUEST_LOCATION_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 checkAndEnableLocation()

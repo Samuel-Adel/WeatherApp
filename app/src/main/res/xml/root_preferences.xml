@@ -5,18 +5,19 @@
         app:title="@string/app_settings">
 
         <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
+            app:defaultValue="@string/en"
+            app:entries="@array/language_key"
+            app:entryValues="@array/language_key"
+            app:key="@string/language_key"
+            app:title="@string/language"
+
             app:useSimpleSummaryProvider="true" />
         <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
+            app:defaultValue="@string/gps"
+            app:entries="@array/location_key"
+            app:entryValues="@array/location_key"
+            app:key="@string/location_key"
+            app:title="@string/location"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
@@ -24,27 +25,29 @@
         app:icon="@drawable/temprature_icon"
         app:title="@string/weather_settings">
         <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
+            app:defaultValue="@string/celsius"
+            app:entries="@array/temp_units_key"
+            app:entryValues="@array/temp_units_key"
+            app:key="@string/temp_unit_key"
+            app:title="@string/temp_unit"
             app:useSimpleSummaryProvider="true" />
         <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
+            app:defaultValue="@string/meter_second"
+            app:entries="@array/speed_unit_key"
+            app:entryValues="@array/speed_unit_key"
+            app:key="@string/speed_unit_key"
+            app:title="@string/speed_unit"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
     <PreferenceCategory
         app:icon="@drawable/notification_bel"
-        app:title="@string/notification">
-
+        app:title="@string/notification_settings">
         <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
+            app:defaultValue="false"
+            app:key="@string/notification_key"
+            app:summaryOff="@string/allow_notifications"
+            app:summaryOn="@string/notification_allowed"
+            app:title="@string/notification" />
 
 
     </PreferenceCategory>
