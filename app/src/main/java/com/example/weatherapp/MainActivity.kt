@@ -28,19 +28,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun configureAppLanguage() {
         AppPreferencesManagerValues.prefsSetup(context = baseContext)
-        when (AppPreferencesManagerValues.language) {
-            null -> {
-                changeLanguage("en")
-            }
-
-            getString(R.string.en) -> {
-                changeLanguage("en")
-            }
-
-            else -> {
-                changeLanguage("ar")
-            }
+        if (AppPreferencesManagerValues.language == null) {
+            changeLanguage("en")
+        } else {
+            changeLanguage(AppPreferencesManagerValues.language!!)
         }
+
+
     }
 
 

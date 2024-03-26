@@ -16,7 +16,7 @@ object AppPreferencesManagerValues {
     fun prefsSetup(context: Context) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         language = sharedPreferences.getString(context.getString(R.string.language_key), "en")
-        Log.i("Prefs", "prefsSetup: " + language)
+        Log.i("Prefs", "prefsSetup: first " + language)
     }
 
     fun getAppTempUnit(context: Context) {

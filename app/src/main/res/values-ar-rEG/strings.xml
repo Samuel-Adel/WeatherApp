@@ -44,13 +44,23 @@
     <string name="language">اللغة</string>
     <string name="ar">عربى</string>
     <string name="en">English</string>
+    <string name="ar_key">ar</string>
+    <string name="en_key">en</string>
 
     <string name="temp_unit">وحدة الحرارة</string>
     <string name="celsius">درجة مئوية</string>
     <string name="fahrenheit">فهرنهايت</string>
     <string name="kelvin">كلفن</string>
+    <string name="celsius_key">celsius_key</string>
+    <string name="fahrenheit_key">fahrenheit_key</string>
+    <string name="kelvin_key">kelvin_key</string>
 
     <string name="speed_unit">وحدة السرعة</string>
     <string name="meter_second">متر/ثانية</string>
     <string name="miles_hour">ميل/ساعة</string>
+    <string name="meter_second_key">meter_second_key</string>
+    <string name="miles_hour_key">miles_hour_key</string>
+
+    <string name="gps_key">gps_key</string>
+    <string name="map_key">map_key</string>
 </resources>

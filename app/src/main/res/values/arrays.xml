@@ -1,22 +1,41 @@
 <resources>
     <!-- Temp Units Preference -->
     <string-array name="temp_units_key">
+        <item>@string/celsius_key</item>
+        <item>@string/fahrenheit_key</item>
+        <item>@string/kelvin_key</item>
+    </string-array>
+    <string-array name="temp_units">
         <item>@string/celsius</item>
         <item>@string/fahrenheit</item>
         <item>@string/kelvin</item>
     </string-array>
+
     <!-- Speed Units Preference -->
     <string-array name="speed_unit_key">
+        <item>@string/meter_second_key</item>
+        <item>@string/miles_hour_key</item>
+    </string-array>
+    <string-array name="speed_unit">
         <item>@string/meter_second</item>
         <item>@string/miles_hour</item>
     </string-array>
     <!-- Language Preference -->
     <string-array name="language_key">
+        <item>@string/ar_key</item>
+        <item>@string/en_key</item>
+    </string-array>
+    <string-array name="language">
         <item>@string/ar</item>
         <item>@string/en</item>
     </string-array>
-    <!-- Language Preference -->
+
+    <!-- location Preference -->
     <string-array name="location_key">
+        <item>@string/gps_key</item>
+        <item>@string/map_key</item>
+    </string-array>
+    <string-array name="location">
         <item>@string/gps</item>
         <item>@string/map</item>
     </string-array>

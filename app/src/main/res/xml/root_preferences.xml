@@ -5,16 +5,16 @@
         app:title="@string/app_settings">
 
         <ListPreference
-            app:defaultValue="@string/en"
-            app:entries="@array/language_key"
+            app:defaultValue="@string/en_key"
+            app:entries="@array/language"
             app:entryValues="@array/language_key"
             app:key="@string/language_key"
             app:title="@string/language"
 
             app:useSimpleSummaryProvider="true" />
         <ListPreference
-            app:defaultValue="@string/gps"
-            app:entries="@array/location_key"
+            app:defaultValue="@string/gps_key"
+            app:entries="@array/location"
             app:entryValues="@array/location_key"
             app:key="@string/location_key"
             app:title="@string/location"
@@ -25,15 +25,15 @@
         app:icon="@drawable/temprature_icon"
         app:title="@string/weather_settings">
         <ListPreference
-            app:defaultValue="@string/celsius"
-            app:entries="@array/temp_units_key"
+            app:defaultValue="@string/celsius_key"
+            app:entries="@array/temp_units"
             app:entryValues="@array/temp_units_key"
             app:key="@string/temp_unit_key"
             app:title="@string/temp_unit"
             app:useSimpleSummaryProvider="true" />
         <ListPreference
-            app:defaultValue="@string/meter_second"
-            app:entries="@array/speed_unit_key"
+            app:defaultValue="@string/meter_second_key"
+            app:entries="@array/speed_unit"
             app:entryValues="@array/speed_unit_key"
             app:key="@string/speed_unit_key"
             app:title="@string/speed_unit"
