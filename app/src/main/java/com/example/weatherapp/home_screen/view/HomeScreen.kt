@@ -18,7 +18,6 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,9 +31,11 @@ import com.example.weatherapp.home_screen.viewModel.HomeScreenViewModelFactory
 import com.example.weatherapp.model.DataSourceRepositoryImpl
 import com.example.weatherapp.model.WeatherData
 import com.example.weatherapp.network.RemoteDataSourceImpl
+import com.example.weatherapp.util.AppPreferencesManagerValues
 import com.example.weatherapp.util.DataSourceState
 import com.example.weatherapp.util.GPSHandler
 import com.example.weatherapp.util.REQUEST_LOCATION_CODE
+import com.example.weatherapp.util.Temperature
 import com.example.weatherapp.util.WeatherHandlingHelper
 import com.example.weatherapp.util.addDegreeSymbol
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -46,7 +47,6 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -70,9 +70,6 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var mGoogleMap: GoogleMap? = null
     private lateinit var geocoder: Geocoder
-    private lateinit var mapFragment: FragmentContainerView
-    private lateinit var mapSupportFragment: SupportMapFragment
-    private lateinit var mapSubmitButton: Button
     private var lat: Double? = null
     private var lon: Double? = null
     private var loaded: Boolean = false
@@ -94,10 +91,10 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
     }
 
     private fun mapSetup() {
-        geocoder = Geocoder(requireContext())
-        mapSupportFragment =
-            childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
-        mapSupportFragment.getMapAsync(this)
+//        geocoder = Geocoder(requireContext())
+//        mapSupportFragment =
+//            childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
+//        mapSupportFragment.getMapAsync(this)
 
     }
 
@@ -126,7 +123,6 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
     }
 
     private fun uiSetup(view: View) {
-        mapSubmitButton = view.findViewById(R.id.mapSubmitButton)
         hourlyWeatherRV = view.findViewById(R.id.rvHourlyWeather)
         daysWeatherRV = view.findViewById(R.id.rvDaysWeather)
         progressBar = view.findViewById(R.id.lottieAnimationLoading)
@@ -137,16 +133,18 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
         refresher = view.findViewById(R.id.swipeAndRefresh)
         refresher.setColorSchemeResources(R.color.gigas)
         refresher.setOnRefreshListener {
-            //  homeScreenViewModel.getWeatherData()
+            getFreshLocation()
         }
-        mapSubmitButton.setOnClickListener {
-            mapSubmitButton.visibility = View.GONE
-        }
+
     }
 
     private fun updateTxtView(weatherData: WeatherData) {
         locationName.text = weatherData.timezone.split("/").last()
-        temperature.text = weatherData.current.temperature.toInt().toString().addDegreeSymbol()
+        temperature.text = Temperature.convertTo(
+            value = weatherData.current.temperature,
+            context = requireContext(),
+            targetUnitKey = AppPreferencesManagerValues.tempUnit
+        ).toInt().toString().addDegreeSymbol()
         weatherStatusImg.setImageResource(WeatherHandlingHelper.getWeatherImage(weatherData.current))
         val description = weatherData.current.weather.first().description
         val capitalizedDescription = description.split(" ").joinToString(" ") { word ->
@@ -156,7 +154,7 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
     }
 
     private fun recyclerViewsSetup() {
-        homeScreenHourlyWeatherAdapter = HourlyWeatherAdapter()
+        homeScreenHourlyWeatherAdapter = HourlyWeatherAdapter(requireContext())
         homeScreenDailyWeatherAdapter = DaysWeatherAdapter()
         hourlyWeatherRV.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -185,11 +183,7 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
             homeScreenViewModel.weatherData.collectLatest { result ->
                 if (result is DataSourceState.Loading && !refresher.isRefreshing) {
                     progressBar.visibility = View.VISIBLE
-                } else {
-                    refresher.isRefreshing = false
-                    progressBar.visibility = View.GONE
-                }
-                if (result is DataSourceState.Success<*>) {
+                } else if (result is DataSourceState.Success<*>) {
                     if (result.data is WeatherData) {
                         WeatherHandlingHelper.sunrise = result.data.current.sunrise
                         WeatherHandlingHelper.sunset = result.data.current.sunset
@@ -199,10 +193,14 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
                         homeScreenHourlyWeatherAdapter.submitList(
                             result.data.hourly
                         )
+                        refresher.isRefreshing = false
+                        progressBar.visibility = View.GONE
                     } else {
                         Toast.makeText(
                             requireContext(), R.string.wrong_data_submitted, Toast.LENGTH_SHORT
                         ).show()
+                        refresher.isRefreshing = false
+                        progressBar.visibility = View.GONE
                     }
                 } else if (result is DataSourceState.Failure) {
                     progressBar.visibility = View.GONE
@@ -212,6 +210,8 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
                         R.string.this_location_does_not_contain_data,
                         Toast.LENGTH_SHORT
                     ).show()
+                    refresher.isRefreshing = false
+                    progressBar.visibility = View.GONE
                 }
 
             }

@@ -58,9 +58,11 @@
     <string name="celsius_key">celsius_key</string>
     <string name="fahrenheit_key">fahrenheit_key</string>
     <string name="kelvin_key">kelvin_key</string>
+
     <string name="speed_unit">Speed Unit</string>
     <string name="meter_second">meter/sec</string>
     <string name="miles_hour">miles/hour</string>
+
     <string name="meter_second_key">meter_second_key</string>
     <string name="miles_hour_key">miles_hour_key</string>
 

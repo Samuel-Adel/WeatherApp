@@ -27,7 +27,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         languagePreference?.setOnPreferenceChangeListener { _, newValue ->
             Log.i("Pref", "onViewCreated: " + " " + newValue)
             if (newValue is String) {
-                changeLanguage()
+                applyChanges()
             } else {
                 false
             }
@@ -44,7 +44,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         // Set onChange listener for tempUnitPreference
         tempUnitPreference?.setOnPreferenceChangeListener { preference, newValue ->
             Log.i("Pref", "onViewCreated: " + preference + " " + newValue)
-
+            applyChanges()
             // Do something when the preference value changes
             true // Return true to update the preference value
         }
@@ -66,7 +66,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    private fun changeLanguage(): Boolean {
+    private fun applyChanges(): Boolean {
         requireActivity().recreate()
         return true
     }

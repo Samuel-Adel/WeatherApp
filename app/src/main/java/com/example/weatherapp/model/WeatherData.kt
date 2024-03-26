@@ -39,7 +39,7 @@ data class MinutelyData(
 
 data class HourlyWeather(
     @SerializedName("dt") val timestamp: Long,
-    @SerializedName("temp") val temperature: Double,
+    @SerializedName("temp") var temperature: Double,
     @SerializedName("feels_like") val feelsLike: Double,
     @SerializedName("pressure") val pressure: Int,
     @SerializedName("humidity") val humidity: Int,

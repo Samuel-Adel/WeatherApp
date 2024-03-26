@@ -26,7 +26,6 @@
                 android:layout_marginStart="80dp"
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="80dp"
-                android:text="@string/unknown"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="38sp"
@@ -39,7 +38,6 @@
                 android:id="@+id/txtVTemperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/default_temp"
                 android:textColor="@color/white"
                 android:textSize="96sp"
                 app:layout_constraintEnd_toEndOf="@+id/txtVLocationName"
@@ -50,7 +48,6 @@
                 android:id="@+id/txtVWeatherStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/unknown"
                 android:textColor="@color/gray"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -88,11 +85,11 @@
 
             <ImageView
                 android:id="@+id/imgWeatherStatus"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
                 android:contentDescription="@string/weather_status_image"
-                android:src="@drawable/clear"
+                android:src="@drawable/light_foggy"
                 app:layout_constraintEnd_toEndOf="@+id/txtVTemperature"
                 app:layout_constraintStart_toStartOf="@+id/txtVTemperature"
                 app:layout_constraintTop_toBottomOf="@+id/txtVWeatherStatus" />
@@ -106,28 +103,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rvHourlyWeather" />
-
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/mapFragment"
-                class="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/mapSubmitButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:text="@string/submit"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
