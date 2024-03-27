@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.PopupMenu
+import androidx.navigation.fragment.findNavController
 import com.example.weatherapp.R
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -23,6 +25,8 @@ import java.io.IOException
 class GoogleMapFragment : Fragment(), OnMapReadyCallback {
     private var mGoogleMap: GoogleMap? = null
     private lateinit var geocoder: Geocoder
+    private var lat: Double = 30.0444
+    private var lon: Double = 31.2357
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -32,6 +36,14 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val btnSubmit = view.findViewById<Button>(R.id.btnSubmitLocation)
+        btnSubmit.setOnClickListener {
+            val bundle = Bundle().apply {
+                putDouble("latitude", lat)
+                putDouble("longitude", lon)
+            }
+            findNavController().navigate(R.id.favouriteScreen, bundle)
+        }
         mapSetup(view)
     }
 
@@ -80,6 +92,8 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback {
         addMarker(LatLng(30.0444, 31.2357))
         mGoogleMap?.setOnMapClickListener { latLng ->
             Log.i("Google MAps", "Clicked: ")
+            lat = latLng.latitude
+            lon = latLng.longitude
             addMarker(latLng)
 
         }

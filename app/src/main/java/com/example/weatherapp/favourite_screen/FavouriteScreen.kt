@@ -1,11 +1,11 @@
 package com.example.weatherapp.favourite_screen
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.navigation.fragment.findNavController
 import com.example.weatherapp.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -22,6 +22,8 @@ class FavouriteScreen : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val fabAddFavLocation = view.findViewById<FloatingActionButton>(R.id.fabAddFavLocation)
+        val latitude = arguments?.getDouble("latitude", 0.0) ?: 0.0
+        val longitude = arguments?.getDouble("longitude", 0.0) ?: 0.0
         fabAddFavLocation.setOnClickListener {
             findNavController().navigate(R.id.googleMapScreen)
         }
