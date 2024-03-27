@@ -7,9 +7,11 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "favourite_location")
 data class FavouriteLocation(
     @PrimaryKey(autoGenerate = true)
-    val id: Int=0,
+    val id: Int = 0,
     @ColumnInfo(name = "latitude")
     val lat: Double,
     @ColumnInfo(name = "longitude")
-    val lon: Double
+    val lon: Double,
+    @ColumnInfo(name = "name")
+    val name: String
 )

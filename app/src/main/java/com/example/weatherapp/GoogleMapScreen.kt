@@ -1,20 +1,19 @@
-package com.example.weatherapp.google_map
+package com.example.weatherapp
 
+import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.weatherapp.R
 import com.example.weatherapp.database.LocalDataSourceImpl
+import com.example.weatherapp.favourite_screen.view.FavouriteScreen
 import com.example.weatherapp.favourite_screen.viewModel.FavLocationViewModel
 import com.example.weatherapp.favourite_screen.viewModel.FavLocationViewModelFactory
 import com.example.weatherapp.model.DataSourceRepositoryImpl
@@ -29,43 +28,41 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import java.io.IOException
 
-class GoogleMapFragment : Fragment(), OnMapReadyCallback {
+class GoogleMapScreen : AppCompatActivity(), OnMapReadyCallback {
     private var mGoogleMap: GoogleMap? = null
     private lateinit var geocoder: Geocoder
     private var lat: Double = 30.0444
     private var lon: Double = 31.2357
+    private var name: String = "Cairo"
     private lateinit var favLocationViewModel: FavLocationViewModel
     private lateinit var favLocationViewModelFactory: FavLocationViewModelFactory
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_google_map, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val btnSubmit = view.findViewById<Button>(R.id.btnSubmitLocation)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.google_map)
+        val btnSubmit = findViewById<Button>(R.id.btnSubmitLocation)
         viewModelSetup()
         btnSubmit.setOnClickListener {
-            favLocationViewModel.addFavLocation(FavouriteLocation(lat = lat, lon = lon))
-//            val bundle = Bundle().apply {
-//                putDouble("latitude", lat)
-//                putDouble("longitude", lon)
-//            }
-//            findNavController().navigate(R.id.favouriteScreen, bundle)
-            findNavController().navigate(R.id.favouriteScreen)
+            Log.i("address", "on Locatoin choosen: " + name + " " + lat + " " + lon)
+            favLocationViewModel.addFavLocation(
+                FavouriteLocation(
+                    lat = lat,
+                    lon = lon,
+                    name = name
+                )
+            )
+            onBackPressed()
+
         }
-        mapSetup(view)
+        mapSetup()
     }
 
-    private fun mapSetup(view: View) {
-        geocoder = Geocoder(requireContext())
+    private fun mapSetup() {
+        geocoder = Geocoder(this)
         val mapFragment =
-            childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
+            supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
-        val mapOptionsButton: ImageButton = view.findViewById(R.id.mapOptionsMenu)
-        val popupMenu = PopupMenu(requireContext(), mapOptionsButton)
+        val mapOptionsButton: ImageButton = findViewById(R.id.mapOptionsMenu)
+        val popupMenu = PopupMenu(this, mapOptionsButton)
         popupMenu.menuInflater.inflate(R.menu.map_view_options, popupMenu.menu)
         popupMenu.setOnMenuItemClickListener { menuItem ->
             changeMap(menuItem.itemId)
@@ -114,6 +111,7 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback {
     private fun addMarker(latLng: LatLng) {
         mGoogleMap?.clear()
         getAddressFromCoordinates(latLng.latitude, latLng.longitude) {
+
             mGoogleMap?.addMarker(
                 MarkerOptions().position(latLng).title(it)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.flag_marker))
@@ -129,6 +127,7 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback {
             val addresses: List<Address>? = geocoder.getFromLocation(latitude, longitude, 1)
             if (!addresses.isNullOrEmpty()) {
                 val address = addresses[0]
+                name = address.adminArea.split(" ").first()
                 val addressText = address.getAddressLine(0)
                 callback(addressText)
             } else {
@@ -143,7 +142,7 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback {
     private fun viewModelSetup() {
         favLocationViewModelFactory = FavLocationViewModelFactory(
             DataSourceRepositoryImpl.getInstance(
-                LocalDataSourceImpl.getInstance(requireContext()),
+                LocalDataSourceImpl.getInstance(this),
                 RemoteDataSourceImpl.getInstance()
             )
         )
@@ -151,4 +150,7 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback {
             ViewModelProvider(this, favLocationViewModelFactory)[FavLocationViewModel::class.java]
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
 }

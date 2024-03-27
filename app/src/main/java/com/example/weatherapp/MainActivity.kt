@@ -22,7 +22,13 @@ class MainActivity : AppCompatActivity() {
         bottomNavBar = findViewById(R.id.bottomNavigation)
         bottomNavBar.setupNavController(navController)
         setupNavBar()
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            controller.popBackStack()
 
+            //            if (destination.id != R.id.googleMapScreen && destination.id != R.id.favouriteScreen) {
+//                controller.popBackStack()
+//            }
+        }
 
     }
 

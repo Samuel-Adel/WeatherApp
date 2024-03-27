@@ -20,22 +20,10 @@
         android:id="@+id/favouriteScreen"
         android:name="com.example.weatherapp.favourite_screen.view.FavouriteScreen"
         android:label="fragment_favourite_screen"
-        tools:layout="@layout/fragment_favourite_screen">
-        <action
-            android:id="@+id/action_favouriteScreen_to_googleMapFragment"
-            app:destination="@id/googleMapScreen" />
-    </fragment>
+        tools:layout="@layout/fragment_favourite_screen"/>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.weatherapp.settings_screen.SettingsFragment"
         android:label="SettingsFragment" />
-    <fragment
-        android:id="@+id/googleMapScreen"
-        android:name="com.example.weatherapp.google_map.GoogleMapFragment"
-        android:label="@string/google_map_screen"
-        tools:layout="@layout/fragment_google_map">
-        <action
-            android:id="@+id/action_googleMapFragment_to_favouriteScreen"
-            app:destination="@id/favouriteScreen" />
-    </fragment>
+
 </navigation>

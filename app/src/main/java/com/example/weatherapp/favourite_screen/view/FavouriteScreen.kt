@@ -1,5 +1,6 @@
 package com.example.weatherapp.favourite_screen.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
+import com.example.weatherapp.GoogleMapScreen
 import com.example.weatherapp.R
 import com.example.weatherapp.database.LocalDataSourceImpl
 import com.example.weatherapp.favourite_screen.viewModel.FavLocationViewModel
@@ -37,7 +38,9 @@ class FavouriteScreen : Fragment() {
 //        val latitude = arguments?.getDouble("latitude", 0.0) ?: 0.0
 //        val longitude = arguments?.getDouble("longitude", 0.0) ?: 0.0
         fabAddFavLocation.setOnClickListener {
-            findNavController().navigate(R.id.googleMapScreen)
+            val intent = Intent(requireContext(), GoogleMapScreen::class.java)
+            startActivity(intent)
+            //  findNavController().navigate(R.id.googleMapScreen)
         }
         lifecycleScope.launch {
             favLocationViewModel.favLocations.collect { favLocations ->
