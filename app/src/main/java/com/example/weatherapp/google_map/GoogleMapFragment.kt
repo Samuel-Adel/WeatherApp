@@ -11,8 +11,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.PopupMenu
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.weatherapp.R
+import com.example.weatherapp.database.LocalDataSourceImpl
+import com.example.weatherapp.favourite_screen.viewModel.FavLocationViewModel
+import com.example.weatherapp.favourite_screen.viewModel.FavLocationViewModelFactory
+import com.example.weatherapp.model.DataSourceRepositoryImpl
+import com.example.weatherapp.model.FavouriteLocation
+import com.example.weatherapp.network.RemoteDataSourceImpl
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -27,6 +34,8 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var geocoder: Geocoder
     private var lat: Double = 30.0444
     private var lon: Double = 31.2357
+    private lateinit var favLocationViewModel: FavLocationViewModel
+    private lateinit var favLocationViewModelFactory: FavLocationViewModelFactory
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -37,12 +46,15 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val btnSubmit = view.findViewById<Button>(R.id.btnSubmitLocation)
+        viewModelSetup()
         btnSubmit.setOnClickListener {
-            val bundle = Bundle().apply {
-                putDouble("latitude", lat)
-                putDouble("longitude", lon)
-            }
-            findNavController().navigate(R.id.favouriteScreen, bundle)
+            favLocationViewModel.addFavLocation(FavouriteLocation(lat = lat, lon = lon))
+//            val bundle = Bundle().apply {
+//                putDouble("latitude", lat)
+//                putDouble("longitude", lon)
+//            }
+//            findNavController().navigate(R.id.favouriteScreen, bundle)
+            findNavController().navigate(R.id.favouriteScreen)
         }
         mapSetup(view)
     }
@@ -126,6 +138,17 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback {
             Log.i("Google MAps", "Error fetching address: ${e.message}")
         }
 
+    }
+
+    private fun viewModelSetup() {
+        favLocationViewModelFactory = FavLocationViewModelFactory(
+            DataSourceRepositoryImpl.getInstance(
+                LocalDataSourceImpl.getInstance(requireContext()),
+                RemoteDataSourceImpl.getInstance()
+            )
+        )
+        favLocationViewModel =
+            ViewModelProvider(this, favLocationViewModelFactory)[FavLocationViewModel::class.java]
     }
 
 }

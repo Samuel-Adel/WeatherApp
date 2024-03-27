@@ -18,7 +18,7 @@
         tools:layout="@layout/fragment_alarm_screen" />
     <fragment
         android:id="@+id/favouriteScreen"
-        android:name="com.example.weatherapp.favourite_screen.FavouriteScreen"
+        android:name="com.example.weatherapp.favourite_screen.view.FavouriteScreen"
         android:label="fragment_favourite_screen"
         tools:layout="@layout/fragment_favourite_screen">
         <action
