@@ -135,7 +135,7 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
         refresher.setOnRefreshListener {
             getFreshLocation()
         }
-
+        progressBar.visibility = View.VISIBLE
     }
 
     private fun updateTxtView(weatherData: WeatherData) {
@@ -178,42 +178,44 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
     }
 
     private fun fetchingDataSetup(lat: Double, lon: Double) {
-        homeScreenViewModel.getWeatherData(lat, lon)
-        lifecycleScope.launch {
-            homeScreenViewModel.weatherData.collectLatest { result ->
-                if (result is DataSourceState.Loading && !refresher.isRefreshing) {
-                    progressBar.visibility = View.VISIBLE
-                } else if (result is DataSourceState.Success<*>) {
-                    if (result.data is WeatherData) {
-                        WeatherHandlingHelper.sunrise = result.data.current.sunrise
-                        WeatherHandlingHelper.sunset = result.data.current.sunset
-                        updateTxtView(result.data)
-                        val modifiedList = result.data.daily.drop(1)
-                        homeScreenDailyWeatherAdapter.submitList(modifiedList)
-                        homeScreenHourlyWeatherAdapter.submitList(
-                            result.data.hourly
-                        )
-                        refresher.isRefreshing = false
+        if (!isDetached && view != null) {
+            homeScreenViewModel.getWeatherData(lat, lon)
+            lifecycleScope.launch {
+                homeScreenViewModel.weatherData.collectLatest { result ->
+                    if (result is DataSourceState.Loading && !refresher.isRefreshing) {
+                        progressBar.visibility = View.VISIBLE
+                    } else if (result is DataSourceState.Success<*>) {
+                        if (result.data is WeatherData) {
+                            WeatherHandlingHelper.sunrise = result.data.current.sunrise
+                            WeatherHandlingHelper.sunset = result.data.current.sunset
+                            updateTxtView(result.data)
+                            val modifiedList = result.data.daily.drop(1)
+                            homeScreenDailyWeatherAdapter.submitList(modifiedList)
+                            homeScreenHourlyWeatherAdapter.submitList(
+                                result.data.hourly
+                            )
+                            refresher.isRefreshing = false
+                            progressBar.visibility = View.GONE
+                        } else {
+                            Toast.makeText(
+                                requireContext(), R.string.wrong_data_submitted, Toast.LENGTH_SHORT
+                            ).show()
+                            refresher.isRefreshing = false
+                            progressBar.visibility = View.GONE
+                        }
+                    } else if (result is DataSourceState.Failure) {
                         progressBar.visibility = View.GONE
-                    } else {
+                        Log.i("WeatherResponse", result.msg.message.toString())
                         Toast.makeText(
-                            requireContext(), R.string.wrong_data_submitted, Toast.LENGTH_SHORT
+                            requireContext(),
+                            R.string.this_location_does_not_contain_data,
+                            Toast.LENGTH_SHORT
                         ).show()
                         refresher.isRefreshing = false
                         progressBar.visibility = View.GONE
                     }
-                } else if (result is DataSourceState.Failure) {
-                    progressBar.visibility = View.GONE
-                    Log.i("WeatherResponse", result.msg.message.toString())
-                    Toast.makeText(
-                        requireContext(),
-                        R.string.this_location_does_not_contain_data,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    refresher.isRefreshing = false
-                    progressBar.visibility = View.GONE
-                }
 
+                }
             }
         }
     }

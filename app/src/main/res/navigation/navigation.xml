@@ -18,11 +18,12 @@
         tools:layout="@layout/fragment_alarm_screen" />
     <fragment
         android:id="@+id/favouriteScreen"
-        android:name="com.example.weatherapp.favourite_screen.FavouriteScreen"
+        android:name="com.example.weatherapp.favourite_screen.view.FavouriteScreen"
         android:label="fragment_favourite_screen"
-        tools:layout="@layout/fragment_favourite_screen" />
+        tools:layout="@layout/fragment_favourite_screen"/>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.weatherapp.settings_screen.SettingsFragment"
         android:label="SettingsFragment" />
+
 </navigation>
