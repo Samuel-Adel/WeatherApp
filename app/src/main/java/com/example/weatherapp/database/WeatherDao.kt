@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.weatherapp.model.FavouriteLocation
 import com.example.weatherapp.model.WeatherEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -19,4 +20,12 @@ interface WeatherDao {
 
     @Delete
     suspend fun deleteProduct(weather: WeatherEntity)
+    @Query("SELECT * FROM favourite_location")
+    fun getFavouriteLocations(): Flow<List<FavouriteLocation>>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertFavouriteLocation(location: FavouriteLocation)
+
+    @Delete
+    suspend fun deleteFavouriteLocation(location: FavouriteLocation)
 }
