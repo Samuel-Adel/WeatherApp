@@ -1,5 +1,7 @@
 package com.example.weatherapp.home_screen.view
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -9,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.HourlyWeatherItemBinding
 import com.example.weatherapp.model.HourlyWeather
+import com.example.weatherapp.util.AppPreferencesManagerValues
+import com.example.weatherapp.util.Temperature
 
-class HourlyWeatherAdapter :
+class HourlyWeatherAdapter(val context: Context) :
     ListAdapter<HourlyWeather, HourlyWeatherAdapter.HourlyWeatherViewHolder>(HourlyWeatherDiffUtil()) {
     private lateinit var binding: HourlyWeatherItemBinding
 
@@ -23,6 +27,12 @@ class HourlyWeatherAdapter :
 
     override fun onBindViewHolder(holder: HourlyWeatherViewHolder, position: Int) {
         val currentWeather = getItem(position)
+        currentWeather.temperature = Temperature.convertTo(
+            value = currentWeather.temperature,
+            context = context,
+            targetUnitKey = AppPreferencesManagerValues.tempUnit
+        )
+        Log.i("current Weather", "onBindViewHolder: " + currentWeather.temperature)
         holder.binding.weatherModel = currentWeather
 
     }

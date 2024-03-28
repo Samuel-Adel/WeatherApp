@@ -1,0 +1,55 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:icon="@drawable/settings_icon_filled"
+        app:title="@string/app_settings">
+
+        <ListPreference
+            app:defaultValue="@string/en_key"
+            app:entries="@array/language"
+            app:entryValues="@array/language_key"
+            app:key="@string/language_key"
+            app:title="@string/language"
+
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            app:defaultValue="@string/gps_key"
+            app:entries="@array/location"
+            app:entryValues="@array/location_key"
+            app:key="@string/location_key"
+            app:title="@string/location"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:icon="@drawable/temprature_icon"
+        app:title="@string/weather_settings">
+        <ListPreference
+            app:defaultValue="@string/celsius_key"
+            app:entries="@array/temp_units"
+            app:entryValues="@array/temp_units_key"
+            app:key="@string/temp_unit_key"
+            app:title="@string/temp_unit"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            app:defaultValue="@string/meter_second_key"
+            app:entries="@array/speed_unit"
+            app:entryValues="@array/speed_unit_key"
+            app:key="@string/speed_unit_key"
+            app:title="@string/speed_unit"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:icon="@drawable/notification_bel"
+        app:title="@string/notification_settings">
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:key="@string/notification_key"
+            app:summaryOff="@string/allow_notifications"
+            app:summaryOn="@string/notification_allowed"
+            app:title="@string/notification" />
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
