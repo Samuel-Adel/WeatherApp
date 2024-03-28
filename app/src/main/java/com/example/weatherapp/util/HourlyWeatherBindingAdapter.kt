@@ -77,7 +77,6 @@ fun getWeatherImage(img: ImageView, weatherModel: HourlyWeather) {
 }
 
 @BindingAdapter("tempFormat")
-
 fun formatTemperature(textView: TextView, temp: Double) {
     textView.text = "${temp.toInt()}°"
 }
