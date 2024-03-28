@@ -135,7 +135,7 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
         refresher.setOnRefreshListener {
             getFreshLocation()
         }
-
+        progressBar.visibility = View.VISIBLE
     }
 
     private fun updateTxtView(weatherData: WeatherData) {

@@ -2,14 +2,15 @@ package com.example.weatherapp.favourite_screen.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.weatherapp.GoogleMapScreen
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.weatherapp.google_map.GoogleMapScreen
 import com.example.weatherapp.R
 import com.example.weatherapp.database.LocalDataSourceImpl
 import com.example.weatherapp.favourite_screen.viewModel.FavLocationViewModel
@@ -22,6 +23,8 @@ import kotlinx.coroutines.launch
 class FavouriteScreen : Fragment() {
     private lateinit var favLocationViewModel: FavLocationViewModel
     private lateinit var favLocationViewModelFactory: FavLocationViewModelFactory
+    private lateinit var favouriteLocationItemAdapter: FavLocationItemAdapter
+    private lateinit var favLocationsRV: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -34,19 +37,28 @@ class FavouriteScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val fabAddFavLocation = view.findViewById<FloatingActionButton>(R.id.fabAddFavLocation)
         viewModelSetup()
+        uiSetup(view)
         favLocationViewModel.favLocations
-//        val latitude = arguments?.getDouble("latitude", 0.0) ?: 0.0
-//        val longitude = arguments?.getDouble("longitude", 0.0) ?: 0.0
         fabAddFavLocation.setOnClickListener {
             val intent = Intent(requireContext(), GoogleMapScreen::class.java)
             startActivity(intent)
-            //  findNavController().navigate(R.id.googleMapScreen)
         }
         lifecycleScope.launch {
             favLocationViewModel.favLocations.collect { favLocations ->
-                Log.i("locations", "onViewCreated: " + favLocations.size)
+                favouriteLocationItemAdapter.submitList(favLocations)
             }
         }
+    }
+
+    private fun uiSetup(view: View) {
+        favLocationsRV = view.findViewById(R.id.rvFavLocations)
+        favLocationsRV.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        favouriteLocationItemAdapter = FavLocationItemAdapter {
+            favLocationViewModel.deleteFromFavorites(it)
+        }
+        favLocationsRV.adapter = favouriteLocationItemAdapter
+
     }
 
     private fun viewModelSetup() {
