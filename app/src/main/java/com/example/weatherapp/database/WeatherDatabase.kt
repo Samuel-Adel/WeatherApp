@@ -1,12 +1,12 @@
 package com.example.weatherapp.database
 
-import com.example.weatherapp.model.WeatherModel
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.weatherapp.model.WeatherEntity
 
-@Database(entities = [WeatherModel::class], version = 1)
+@Database(entities = [WeatherEntity::class], version = 1)
 abstract class WeatherDatabase : RoomDatabase() {
     abstract fun getProductDao(): WeatherDao
 
@@ -16,7 +16,7 @@ abstract class WeatherDatabase : RoomDatabase() {
         fun getInstance(context: Context): WeatherDatabase {
             return INSTANCE ?: synchronized(context) {
                 val instance = Room.databaseBuilder(
-                    context.applicationContext, WeatherDatabase::class.java, "products_database"
+                    context.applicationContext, WeatherDatabase::class.java, "weather"
                 ).build()
                 INSTANCE = instance
                 instance

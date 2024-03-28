@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gigas">#48319D</color>
     <color name="eastBay">#3A3A6A</color>
+    <color name="gray">#A9A9A9</color>
+    <color name="eastBay40p">#6648319D</color>
 </resources>

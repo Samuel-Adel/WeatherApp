@@ -1,6 +1,7 @@
 package com.example.weatherapp.database
+
 import android.content.Context
-import com.example.weatherapp.model.WeatherModel
+import com.example.weatherapp.model.WeatherData
 
 import kotlinx.coroutines.flow.Flow
 
@@ -20,10 +21,9 @@ class LocalDataSourceImpl private constructor(context: Context) : ILocalDataSour
         WeatherDatabase.getInstance(context).getProductDao()
     }
 
-    override  fun getSavedWeatherList(): Flow<List<WeatherModel>> {
-        return dao.getWeatherList()
+    override fun getSavedWeatherList(): Flow<List<WeatherData>> {
+        TODO("convert the WeatherEntity to WeatherData")
     }
-
 
 
 }

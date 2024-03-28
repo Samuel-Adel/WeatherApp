@@ -13,7 +13,6 @@ class DataSourceRepositoryImpl private constructor(
     companion object {
         @Volatile
         private var INSTANCE: DataSourceRepositoryImpl? = null
-
         fun getInstance(
             localDataSource: ILocalDataSource,
             remoteDataSource: IRemoteDataSource
@@ -26,8 +25,8 @@ class DataSourceRepositoryImpl private constructor(
         }
     }
 
-    override fun getWeatherList(): Flow<DataSourceState> {
-        return remoteDataSource.getWeather()
+    override fun getWeatherList(lat: Double, long: Double): Flow<DataSourceState> {
+        return remoteDataSource.getWeather(lat, long)
     }
 
 

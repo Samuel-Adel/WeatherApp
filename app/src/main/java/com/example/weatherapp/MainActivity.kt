@@ -1,49 +1,57 @@
 package com.example.weatherapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.qamar.curvedbottomnaviagtion.CurvedBottomNavigation
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var navController: NavController
+    private lateinit var bottomNavBar: CurvedBottomNavigation
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val bottomNavBar: CurvedBottomNavigation = findViewById(R.id.bottomNavigation)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+        bottomNavBar = findViewById(R.id.bottomNavigation)
+        bottomNavBar.setupNavController(navController)
+        setupNavBar()
+
+    }
+
+
+    private fun setupNavBar() {
         bottomNavBar.add(
-            CurvedBottomNavigation.Model(1, getString(R.string.home), R.drawable.home_icon)
+            CurvedBottomNavigation.Model(
+                R.id.homeScreen, getString(R.string.home), R.drawable.home_icon
+            )
+        )
+        bottomNavBar.add(
+            CurvedBottomNavigation.Model(
+                R.id.favouriteScreen, getString(R.string.favourite), R.drawable.fav_icon
+            )
 
         )
         bottomNavBar.add(
-            CurvedBottomNavigation.Model(2, getString(R.string.favourite), R.drawable.fav_icon)
+            CurvedBottomNavigation.Model(
+                R.id.alarmScreen, getString(R.string.alarm), R.drawable.alarm_icon
+            )
 
         )
         bottomNavBar.add(
-            CurvedBottomNavigation.Model(3, getString(R.string.alarm), R.drawable.alarm_icon)
-
+            CurvedBottomNavigation.Model(
+                R.id.settingsScreen, getString(R.string.settings), R.drawable.setting_icon
+            )
         )
-        bottomNavBar.add(
-            CurvedBottomNavigation.Model(4, getString(R.string.settings), R.drawable.setting_icon)
-
-        )
-        bottomNavBar.show(1)
-        bottomNavBar.setOnClickListener {
-            when (it.id) {
-                1 -> {
-                    bottomNavBar.show(1)
-                }
-
-                2 -> {
-                    bottomNavBar.show(2)
-                }
-
-                3 -> {
-                    bottomNavBar.show(3)
-                }
-
-                4 -> {
-                    bottomNavBar.show(4)
-                }
-            }
+        bottomNavBar.setOnClickMenuListener {
+            navController.navigate(it.id)
         }
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
 }
