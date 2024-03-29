@@ -17,6 +17,7 @@ import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -73,6 +74,13 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
     private var lat: Double? = null
     private var lon: Double? = null
     private var loaded: Boolean = false
+    private lateinit var weatherAttributesCard: CardView
+    private lateinit var pressureTxtV: TextView
+    private lateinit var humidityTxtV: TextView
+    private lateinit var cloudsTxtV: TextView
+    private lateinit var windSpeedTxtV: TextView
+    private lateinit var visibilityTxtV: TextView
+    private lateinit var ultraVioletTxtV: TextView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -123,6 +131,13 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
     }
 
     private fun uiSetup(view: View) {
+        pressureTxtV = view.findViewById(R.id.txtVPressureValue)
+        humidityTxtV = view.findViewById(R.id.txtVHumidityValue)
+        cloudsTxtV = view.findViewById(R.id.txtVCloudsValue)
+        windSpeedTxtV = view.findViewById(R.id.txtVWindSpeedValue)
+        visibilityTxtV = view.findViewById(R.id.txtVVisibilityValue)
+        ultraVioletTxtV = view.findViewById(R.id.txtVUltraVioletValue)
+        weatherAttributesCard = view.findViewById(R.id.cardViewWeatherAttributes)
         hourlyWeatherRV = view.findViewById(R.id.rvHourlyWeather)
         daysWeatherRV = view.findViewById(R.id.rvDaysWeather)
         progressBar = view.findViewById(R.id.lottieAnimationLoading)
@@ -139,6 +154,13 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
     }
 
     private fun updateTxtView(weatherData: WeatherData) {
+        weatherAttributesCard.visibility = View.VISIBLE
+        pressureTxtV.text = weatherData.current.pressure.toString()
+        humidityTxtV.text = weatherData.current.humidity.toString()
+        cloudsTxtV.text = weatherData.current.clouds.toString()
+        windSpeedTxtV.text = weatherData.current.windSpeed.toString()
+        visibilityTxtV.text = weatherData.current.visibility.toString()
+        ultraVioletTxtV.text = weatherData.current.uvIndex.toString()
         locationName.text = weatherData.timezone.split("/").last()
         temperature.text = Temperature.convertTo(
             value = weatherData.current.temperature,

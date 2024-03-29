@@ -16,6 +16,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.setBackgroundColor(resources.getColor(android.R.color.white))
+
         val languagePreference: ListPreference? = findPreference(getString(R.string.language_key))
         val locationPreference: ListPreference? = findPreference(getString(R.string.location_key))
         val tempUnitPreference: ListPreference? = findPreference(getString(R.string.temp_unit_key))
