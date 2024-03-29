@@ -56,7 +56,7 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 
 @Suppress("DEPRECATION")
-class HomeScreen : Fragment(), OnMapReadyCallback {
+class HomeScreen : Fragment() {
     private lateinit var refresher: SwipeRefreshLayout
     private lateinit var homeScreenHourlyWeatherAdapter: HourlyWeatherAdapter
     private lateinit var homeScreenDailyWeatherAdapter: DaysWeatherAdapter
@@ -69,8 +69,6 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
     private lateinit var weatherStatus: TextView
     private lateinit var weatherStatusImg: ImageView
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private var mGoogleMap: GoogleMap? = null
-    private lateinit var geocoder: Geocoder
     private var lat: Double? = null
     private var lon: Double? = null
     private var loaded: Boolean = false
@@ -301,48 +299,6 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
         }
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        mGoogleMap = googleMap
-        val cairo = LatLng(30.0444, 31.2357)
-        mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(cairo, 10f))
-        mGoogleMap?.setOnMapClickListener { latLng ->
-            Log.i("Google MAps", "Clicked: ")
-            addMarker(latLng)
 
-        }
-    }
-
-    private fun addMarker(latLng: LatLng) {
-        mGoogleMap?.clear()
-        getAddressFromCoordinates(latLng.latitude, latLng.longitude) {
-            mGoogleMap?.addMarker(
-                MarkerOptions()
-                    .position(latLng)
-                    .title(it)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.flag_marker))
-                    .draggable(true)
-            )
-        }
-    }
-
-    private fun getAddressFromCoordinates(
-        latitude: Double,
-        longitude: Double,
-        callback: (String) -> Unit
-    ) {
-        try {
-            val addresses: List<Address>? = geocoder.getFromLocation(latitude, longitude, 1)
-            if (!addresses.isNullOrEmpty()) {
-                val address = addresses[0]
-                val addressText = address.getAddressLine(0)
-                callback(addressText)
-            } else {
-                Log.i("Google MAps", "No address found for the provided location")
-            }
-        } catch (e: IOException) {
-            Log.i("Google MAps", "Error fetching address: ${e.message}")
-        }
-
-    }
 
 }

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.google_map.GoogleMapScreen
 import com.example.weatherapp.R
 import com.example.weatherapp.database.LocalDataSourceImpl
+import com.example.weatherapp.fav_locatoin_details_screen.FavLocationDetailsScreen
 import com.example.weatherapp.favourite_screen.viewModel.FavLocationViewModel
 import com.example.weatherapp.favourite_screen.viewModel.FavLocationViewModelFactory
 import com.example.weatherapp.model.DataSourceRepositoryImpl
@@ -54,9 +55,16 @@ class FavouriteScreen : Fragment() {
         favLocationsRV = view.findViewById(R.id.rvFavLocations)
         favLocationsRV.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        favouriteLocationItemAdapter = FavLocationItemAdapter {
+        favouriteLocationItemAdapter = FavLocationItemAdapter({
+            val intent = Intent(requireContext(), FavLocationDetailsScreen::class.java).apply {
+                putExtra(resources.getString(R.string.lat), it.lat)
+                putExtra(resources.getString(R.string.lon), it.lon)
+                putExtra(resources.getString(R.string.name), it.name)
+            }
+            startActivity(intent)
+        }, {
             favLocationViewModel.deleteFromFavorites(it)
-        }
+        })
         favLocationsRV.adapter = favouriteLocationItemAdapter
 
     }
