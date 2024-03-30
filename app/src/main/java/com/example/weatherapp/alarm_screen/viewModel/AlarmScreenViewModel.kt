@@ -1,5 +1,6 @@
 package com.example.weatherapp.alarm_screen.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.model.AlarmItem
@@ -21,22 +22,31 @@ class AlarmScreenViewModel(
         get() = _alarms
 
     init {
-        getFavLocations()
+        getAlarms()
     }
 
-    private fun getFavLocations() =
+    private fun getAlarms() =
         viewModelScope.launch(Dispatchers.IO) {
-            repo.getFavLocationsList().collect {
-
+            Log.i("GetAlarms", "getAlarms: called")
+            repo.getAlarmsList().collect {
+                _alarms.value = it
             }
         }
 
 
     fun cancelAlarm(item: AlarmItem) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.deleteAlarm(item)
+            getAlarms()
+        }
         alarmRepository.cancel(item)
     }
 
     fun scheduleAlarm(item: AlarmItem) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.addAlarm(item)
+            getAlarms()
+        }
         alarmRepository.schedule(item)
     }
 

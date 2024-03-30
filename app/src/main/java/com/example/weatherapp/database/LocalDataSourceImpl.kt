@@ -1,6 +1,7 @@
 package com.example.weatherapp.database
 
 import android.content.Context
+import com.example.weatherapp.model.AlarmItem
 import com.example.weatherapp.model.FavouriteLocation
 import com.example.weatherapp.model.WeatherData
 
@@ -36,6 +37,18 @@ class LocalDataSourceImpl private constructor(context: Context) : ILocalDataSour
 
     override suspend fun deleteFavLocation(favouriteLocation: FavouriteLocation) {
         dao.deleteFavouriteLocation(favouriteLocation)
+    }
+
+    override fun geAlarmsList(): Flow<List<AlarmItem>> {
+        return dao.getAlarmsList()
+    }
+
+    override suspend fun addAlarm(alarmItem: AlarmItem) {
+        dao.insertAlarm(alarmItem)
+    }
+
+    override suspend fun deleteAlarm(alarmItem: AlarmItem) {
+        dao.deleteAlarm(alarmItem)
     }
 
 

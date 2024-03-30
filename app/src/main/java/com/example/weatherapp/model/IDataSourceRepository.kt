@@ -8,6 +8,10 @@ interface IDataSourceRepository {
     fun getSavedWeatherList(): Flow<List<WeatherData>>
     fun getFavLocationsList(): Flow<List<FavouriteLocation>>
     suspend fun addFavLocation(favouriteLocation: FavouriteLocation)
-    suspend   fun deleteFavLocation(favouriteLocation: FavouriteLocation)
+    suspend fun deleteFavLocation(favouriteLocation: FavouriteLocation)
+
+    fun getAlarmsList(): Flow<List<AlarmItem>>
+    suspend fun addAlarm(alarmItem: AlarmItem)
+    suspend fun deleteAlarm(alarmItem: AlarmItem)
 
 }

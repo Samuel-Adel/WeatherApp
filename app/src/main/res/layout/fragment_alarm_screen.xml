@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout2"
     android:layout_width="match_parent"
-    android:layout_height="744dp"
+    android:layout_height="match_parent"
     android:layout_marginBottom="50dp"
     tools:context=".alarm_screen.view.AlarmScreen">
 
@@ -12,22 +13,25 @@
         android:id="@+id/rvAlarms"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/fabAddAlarm"
+        android:layout_marginBottom="16dp"
         android:paddingStart="20dp"
         android:paddingTop="30dp"
         android:paddingEnd="20dp"
-        android:paddingBottom="30dp" />
+        android:paddingBottom="70dp"
+        app:layout_constraintBottom_toTopOf="@id/fabAddAlarm"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddAlarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="30dp"
         android:contentDescription="@string/en_key"
         android:src="@drawable/add_icon"
         app:layout_anchor="@id/rvAlarms"
-        app:layout_anchorGravity="bottom|end" />
+        app:layout_anchorGravity="bottom|end"
+        app:layout_constraintBottom_toBottomOf="@id/rvAlarms"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
