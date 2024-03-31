@@ -41,7 +41,7 @@ class WeatherDaoTest {
     @Test
     fun saveAlarm_retrievesAlarm() = runTest {
         val alarmItem =
-            AlarmItem(id = 1, time = LocalDateTime.now(), longitude = 0.0, latitude = 0.0)
+            AlarmItem( time = LocalDateTime.now(), longitude = 0.0, latitude = 0.0)
         database.getWeatherDao().insertAlarm(alarmItem)
         val insertedTask = database.getWeatherDao().getAlarmsList().first()
         val result = insertedTask.first()

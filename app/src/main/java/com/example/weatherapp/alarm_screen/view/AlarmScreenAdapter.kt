@@ -42,7 +42,7 @@ class AlarmScreenAdapter(
             oldItem: AlarmItem,
             newItem: AlarmItem
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.time == newItem.time
         }
 
         override fun areContentsTheSame(

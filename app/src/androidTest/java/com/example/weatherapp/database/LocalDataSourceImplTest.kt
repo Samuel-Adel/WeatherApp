@@ -157,8 +157,8 @@ class LocalDataSourceImplTest {
     @Test
     fun geAlarmsList_retrievesAlarmsList() = runTest {
         // Given
-        val alarm1 = AlarmItem(1, LocalDateTime.now(), 40.0, -73.0)
-        val alarm2 = AlarmItem(2, LocalDateTime.now().plusDays(1), 34.0, -118.0)
+        val alarm1 = AlarmItem( LocalDateTime.now(), 40.0, -73.0)
+        val alarm2 = AlarmItem( LocalDateTime.now().plusDays(1), 34.0, -118.0)
         val alarms = listOf(alarm1, alarm2)
         alarms.forEach { localDataSource.addAlarm(it) }
 
@@ -172,7 +172,7 @@ class LocalDataSourceImplTest {
     @Test
     fun addAlarm_addsAlarmCorrectly() = runTest {
         // Given
-        val alarm = AlarmItem(1, LocalDateTime.now(), 40.0, -73.0)
+        val alarm = AlarmItem( LocalDateTime.now(), 40.0, -73.0)
 
         // When
         localDataSource.addAlarm(alarm)
@@ -185,7 +185,7 @@ class LocalDataSourceImplTest {
     @Test
     fun deleteAlarm_deletesAlarmCorrectly() = runTest {
         // Given
-        val alarm = AlarmItem(1, LocalDateTime.now(), 40.0, -73.0)
+        val alarm = AlarmItem( LocalDateTime.now(), 40.0, -73.0)
         localDataSource.addAlarm(alarm)
 
         // When

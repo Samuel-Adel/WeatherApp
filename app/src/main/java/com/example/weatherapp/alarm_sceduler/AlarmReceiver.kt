@@ -26,11 +26,14 @@ class AlarmReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        val alarm = intent?.getSerializableExtra("myObject") as AlarmItem
-        context.let {
+        val alarm = intent?.getSerializableExtra("Extra_Message") as AlarmItem
+        showNotification(
+            context, "There is no internet"
+        )
+        context?.let {
             CoroutineScope(Dispatchers.IO).launch {
                 val repo = DataSourceRepositoryImpl.getInstance(
-                    LocalDataSourceImpl.getInstance(context!!), RemoteDataSourceImpl.getInstance()
+                    LocalDataSourceImpl.getInstance(context), RemoteDataSourceImpl.getInstance()
                 )
                 repo.getWeatherList(alarm.latitude, alarm.longitude).collectLatest { result ->
                     if (result is DataSourceState.Success<*>) {
@@ -40,7 +43,7 @@ class AlarmReceiver : BroadcastReceiver() {
                             showNotification(
                                 context, result.data.hourly.first().weather.first().description
                             )
-
+                            repo.deleteAlarm(alarm)
                         }
                     } else if (result is DataSourceState.Failure) {
                         Log.i("WeatherResponse", result.msg.message.toString())
