@@ -20,14 +20,29 @@ class HomeScreenViewModel(private val repo: IDataSourceRepository) : ViewModel()
 
     fun getWeatherData(lat: Double, lon: Double) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.getWeatherList(lat, lon)
-                .catch { e ->
-                    _weatherData.value = DataSourceState.Failure(e)
-                }
-                .collect {
-                    _weatherData.value = it
-                }
+            repo.getWeatherList(lat, lon).catch { e ->
+                _weatherData.value = DataSourceState.Failure(e)
+            }.collect {
+                _weatherData.value = it
+            }
 
+        }
+    }
+
+    fun getLocalWeatherData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.getSavedWeatherList().catch { e ->
+                _weatherData.value = DataSourceState.Failure(e)
+            }.collect {
+                _weatherData.value = it
+            }
+
+        }
+    }
+
+    fun saveWeatherDataLocally(weatherData: WeatherData) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.saveWeatherData(weatherData)
         }
     }
 }

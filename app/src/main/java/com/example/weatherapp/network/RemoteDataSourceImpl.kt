@@ -1,7 +1,6 @@
 package com.example.weatherapp.network
 
 import android.util.Log
-import com.example.weatherapp.R
 import com.example.weatherapp.util.DataSourceState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

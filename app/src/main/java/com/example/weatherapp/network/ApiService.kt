@@ -13,7 +13,5 @@ interface ApiService {
         @Query("lon") lon: Double,
         @Query("units") unit: String = "metric",
         @Query("appid") appid: String = "e460f5006298cd345174a78ae174f4cf",
-
-
         ): Response<WeatherData>
 }

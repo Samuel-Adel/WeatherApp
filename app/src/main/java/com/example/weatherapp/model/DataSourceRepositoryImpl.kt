@@ -26,8 +26,8 @@ class DataSourceRepositoryImpl private constructor(
         return remoteDataSource.getWeather(lat, long)
     }
 
-    override fun getSavedWeatherList(): Flow<List<WeatherData>> {
-        TODO("Not yet implemented")
+    override fun getSavedWeatherList(): Flow<DataSourceState> {
+        return localDataSource.getSavedWeatherList()
     }
 
     override fun getFavLocationsList(): Flow<List<FavouriteLocation>> {
@@ -48,6 +48,10 @@ class DataSourceRepositoryImpl private constructor(
 
     override suspend fun addAlarm(alarmItem: AlarmItem) {
         localDataSource.addAlarm(alarmItem)
+    }
+
+    override suspend fun saveWeatherData(weatherData: WeatherData) {
+        localDataSource.saveWeatherData(weatherData)
     }
 
     override suspend fun deleteAlarm(alarmItem: AlarmItem) {

@@ -28,7 +28,7 @@
     <string name="location">Location</string>
     <string name="initial_setup">Initial Setup</string>
     <string name="pls_turn_on_location">Please turn on Location</string>
-    <string name="this_location_does_not_contain_data">"This Location doesn't contain data for Weather!"</string>
+    <string name="this_location_does_not_contain_data">Check your internet connection!</string>
     <string name="google_map_api_key">AIzaSyCzesjn7dhhrCJ5CoLw9IMmLZ7dyA3TEkQ</string>
     <string name="add_fav_locatoin">Add fav location</string>
 
