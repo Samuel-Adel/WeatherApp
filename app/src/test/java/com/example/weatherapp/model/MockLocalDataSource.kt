@@ -1,16 +1,13 @@
-package com.example.weatherapp.database
-
-import com.example.weatherapp.model.AlarmItem
-import com.example.weatherapp.model.FavouriteLocation
-import com.example.weatherapp.model.WeatherData
+package com.example.weatherapp.model
+import com.example.weatherapp.database.ILocalDataSource
 import com.example.weatherapp.util.DataSourceState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class MockLocalDataSource(
-    private val savedWeatherList: WeatherData,
-    private val favLocationsList: MutableList<FavouriteLocation> = mutableListOf(),
-    private val alarmsList: MutableList<AlarmItem> = mutableListOf()
+     val savedWeatherList: WeatherData,
+     val favLocationsList: MutableList<FavouriteLocation> = mutableListOf(),
+     val alarmsList: MutableList<AlarmItem> = mutableListOf()
 ) : ILocalDataSource {
     override fun getSavedWeatherList(): Flow<DataSourceState> {
         return flow {

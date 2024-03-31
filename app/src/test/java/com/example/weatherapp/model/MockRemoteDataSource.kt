@@ -1,6 +1,6 @@
-package com.example.weatherapp.network
+package com.example.weatherapp.model
 
-import com.example.weatherapp.model.WeatherData
+import com.example.weatherapp.network.IRemoteDataSource
 import com.example.weatherapp.util.DataSourceState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

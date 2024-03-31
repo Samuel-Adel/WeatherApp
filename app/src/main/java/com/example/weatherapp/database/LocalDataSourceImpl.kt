@@ -24,7 +24,7 @@ class LocalDataSourceImpl private constructor(context: Context) : ILocalDataSour
     }
 
     private val dao: WeatherDao by lazy {
-        WeatherDatabase.getInstance(context).getProductDao()
+        WeatherDatabase.getInstance(context).getWeatherDao()
     }
 
     override fun getSavedWeatherList(): Flow<DataSourceState> = flow {

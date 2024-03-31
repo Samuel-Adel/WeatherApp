@@ -90,11 +90,11 @@ dependencies {
     testImplementation("org.robolectric:robolectric:4.5.1")
 
     // AndroidX Test - JVM testing
-    testImplementation("androidx.test:core-ktx:1.4.0")
+    testImplementation("androidx.test:core-ktx:1.5.0")
     //testImplementation("androidx.test.ext:junit:1.1.3")
 
 // AndroidX Test - Instrumented testing
-    androidTestImplementation("androidx.test.:1.1.3")
+    androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
 //Timber
@@ -102,9 +102,9 @@ dependencies {
 
 // hamcrest
     testImplementation("org.hamcrest:hamcrest:2.2")
-    testImplementation("org.hamcrest:hamcrest-library:1.3")
-    androidTestImplementation("org.hamcrest:hamcrest:1.3")
-    androidTestImplementation("org.hamcrest:hamcrest-library:1.3")
+    testImplementation("org.hamcrest:hamcrest-library:2.2")
+    androidTestImplementation("org.hamcrest:hamcrest:2.2")
+    androidTestImplementation("org.hamcrest:hamcrest-library:2.2")
 
 // AndroidX and Robolectric
     testImplementation("androidx.test.ext:junit-ktx:1.1.3")
