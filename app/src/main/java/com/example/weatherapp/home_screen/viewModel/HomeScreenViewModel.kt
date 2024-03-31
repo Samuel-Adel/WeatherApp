@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class HomeScreenViewModel(private val repo: IDataSourceRepository) : ViewModel() {
+
     private val _weatherData =
         MutableStateFlow<DataSourceState>(DataSourceState.Success(WeatherData::class.java))
     val weatherData: StateFlow<DataSourceState>

@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 
 class FavLocationViewModel(private val repo: IDataSourceRepository) : ViewModel() {
 
+
     private val _favLocations = MutableStateFlow<List<FavouriteLocation>>(emptyList())
     val favLocations: StateFlow<List<FavouriteLocation>>
         get() = _favLocations
