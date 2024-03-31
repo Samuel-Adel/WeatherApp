@@ -87,8 +87,8 @@ dependencies {
     // Dependencies for local unit tests
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.hamcrest:hamcrest-all:1.3")
-    testImplementation("androidx.arch.core:core-testing:2.1.0")
-    testImplementation("org.robolectric:robolectric:4.5.1")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation("org.robolectric:robolectric:4.8")
 
     // AndroidX Test - JVM testing
     testImplementation("androidx.test:core-ktx:1.5.0")

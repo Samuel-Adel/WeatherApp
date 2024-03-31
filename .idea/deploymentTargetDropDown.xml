@@ -2,46 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="LocalDataSourceImplTest">
-        <State />
-      </entry>
-      <entry key="app">
-        <State>
-          <runningDeviceTargetsSelectedWithDialog>
-            <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="SERIAL_NUMBER" />
-                  <value value="f478d949" />
-                </Key>
-              </deviceKey>
-            </Target>
-            <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\Sasa Adel\.android\avd\Pixel_7_Pro_API_34.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </runningDeviceTargetsSelectedWithDialog>
-        </State>
-      </entry>
-      <entry key="deleteAlarmAlert()">
-        <State />
-      </entry>
       <entry key="deleteAlarmAlert() (1)">
-        <State />
-      </entry>
-      <entry key="deleteFavLocation_deletesFavLocationCorrectly()">
-        <State />
-      </entry>
-      <entry key="insertAlarmAlert()">
-        <State />
-      </entry>
-      <entry key="insertAlarmAlert() (1)">
         <State />
       </entry>
     </value>

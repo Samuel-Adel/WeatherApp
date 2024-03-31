@@ -29,7 +29,7 @@
     <string name="initial_setup">Initial Setup</string>
     <string name="pls_turn_on_location">Please turn on Location</string>
     <string name="this_location_does_not_contain_data">Check your internet connection!</string>
-    <string name="google_map_api_key">AIzaSyCzesjn7dhhrCJ5CoLw9IMmLZ7dyA3TEkQ</string>
+    <string name="google_map_api_key">AIzaSyB2gt1Kmpv4xdodCM13OROMOlJmXQfGNM0</string>
     <string name="add_fav_locatoin">Add fav location</string>
 
     <!-- Preference Keys -->
@@ -73,6 +73,7 @@
 
     <string name="gps_key">gps_key</string>
     <string name="map_key">map_key</string>
+
     <string name="add">Add</string>
     <string name="menu_map_option">Menu Map Options</string>
     <string name="normal_map">Normal Map</string>

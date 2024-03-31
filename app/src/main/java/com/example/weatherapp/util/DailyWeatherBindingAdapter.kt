@@ -6,7 +6,6 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.example.weatherapp.R
 import com.example.weatherapp.model.DailyData
-import com.example.weatherapp.model.HourlyWeather
 import com.example.weatherapp.model.TemperatureData
 import java.util.*
 
@@ -26,7 +25,23 @@ fun getDayOfWeek(textView: TextView, timestamp: Long) {
         Calendar.SATURDAY -> "Sat"
         else -> "Unknown"
     }
-    textView.text = dayName
+    val dayNameArab = when (calendar.get(Calendar.DAY_OF_WEEK)) {
+        Calendar.SUNDAY -> "الأحد"
+        Calendar.MONDAY -> "الإثنين"
+        Calendar.TUESDAY -> "الثلاثاء"
+        Calendar.WEDNESDAY -> "الأربعاء"
+        Calendar.THURSDAY -> "الخميس"
+        Calendar.FRIDAY -> "الجمعة"
+        Calendar.SATURDAY -> "السبت"
+        else -> ""
+    }
+    if (AppPreferencesManagerValues.language == "ar") {
+        textView.text = dayNameArab
+
+    } else {
+        textView.text = dayName
+
+    }
 }
 
 @BindingAdapter("minMaxTempFormat")
