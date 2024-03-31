@@ -36,7 +36,6 @@ import com.example.weatherapp.util.GPSHandler
 import com.example.weatherapp.util.REQUEST_LOCATION_CODE
 import com.example.weatherapp.util.Temperature
 import com.example.weatherapp.util.WeatherHandlingHelper
-import com.example.weatherapp.util.addDegreeSymbol
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -156,7 +155,7 @@ class HomeScreen : Fragment() {
             value = weatherData.current.temperature,
             context = requireContext(),
             targetUnitKey = AppPreferencesManagerValues.tempUnit
-        ).toInt().toString().addDegreeSymbol()
+        ).toInt().toString()
         weatherStatusImg.setImageResource(WeatherHandlingHelper.getWeatherImage(weatherData.current))
         val description = weatherData.current.weather.first().description
         val capitalizedDescription = description.split(" ").joinToString(" ") { word ->
