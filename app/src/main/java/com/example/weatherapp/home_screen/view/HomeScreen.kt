@@ -2,19 +2,14 @@ package com.example.weatherapp.home_screen.view
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.pm.PackageManager
-import android.location.Address
-import android.location.Geocoder
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
@@ -36,24 +31,19 @@ import com.example.weatherapp.util.AppPreferencesManagerValues
 import com.example.weatherapp.util.DataSourceState
 import com.example.weatherapp.util.GPSHandler
 import com.example.weatherapp.util.REQUEST_LOCATION_CODE
+import com.example.weatherapp.util.SpeedUnitConverter
 import com.example.weatherapp.util.Temperature
 import com.example.weatherapp.util.WeatherHandlingHelper
 import com.example.weatherapp.util.addDegreeSymbol
+import com.example.weatherapp.util.addSpeedUnit
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 @Suppress("DEPRECATION")
 class HomeScreen : Fragment() {
@@ -91,42 +81,27 @@ class HomeScreen : Fragment() {
         uiSetup(view)
         recyclerViewsSetup()
         viewModelSetup()
-        // showLocationDialog()
-        onGPsChosen()
-        //  mapSetup()
+        GPSORMAP()
     }
 
-    private fun mapSetup() {
-//        geocoder = Geocoder(requireContext())
-//        mapSupportFragment =
-//            childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
-//        mapSupportFragment.getMapAsync(this)
+    private fun GPSORMAP() {
+        Log.i("HomeCllaser", "GPSORMAP: " + AppPreferencesManagerValues.location)
+        if (AppPreferencesManagerValues.location == requireContext().resources.getString(R.string.map_key)) {
+            Log.i(
+                "HomeCllaser",
+                "GPSORMAP: " + AppPreferencesManagerValues.getLat() + " " + AppPreferencesManagerValues.getLon()
+            )
 
-    }
-
-    private fun showLocationDialog() {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-        val inflater = layoutInflater
-        val dialogView = inflater.inflate(R.layout.gps_map_dialog, null)
-        builder.setView(dialogView)
-        val dialog = builder.create()
-        dialog.setIcon(R.drawable.light_foggy)
-        dialog.show()
-        dialog.setCanceledOnTouchOutside(false)
-        val rgGpsOrMap = dialogView.findViewById<RadioGroup>(R.id.rgGpsOrMap)
-        dialogView.findViewById<Button>(R.id.btnSubmit).setOnClickListener {
-            when (rgGpsOrMap.checkedRadioButtonId) {
-                R.id.radioOpenMap -> {
-                }
-
-                else -> {
-                    onGPsChosen()
-                    dialog.cancel()
-                }
-            }
+            fetchingDataSetup(
+                AppPreferencesManagerValues.getLat(),
+                AppPreferencesManagerValues.getLon()
+            )
+        } else {
+            onGPsChosen()
 
         }
     }
+
 
     private fun uiSetup(view: View) {
         pressureTxtV = view.findViewById(R.id.txtVPressureValue)
@@ -146,7 +121,7 @@ class HomeScreen : Fragment() {
         refresher = view.findViewById(R.id.swipeAndRefresh)
         refresher.setColorSchemeResources(R.color.gigas)
         refresher.setOnRefreshListener {
-            getFreshLocation()
+            GPSORMAP()
         }
         progressBar.visibility = View.VISIBLE
     }
@@ -157,7 +132,18 @@ class HomeScreen : Fragment() {
         pressureTxtV.text = weatherData.current.pressure.toString()
         humidityTxtV.text = weatherData.current.humidity.toString()
         cloudsTxtV.text = weatherData.current.clouds.toString()
-        windSpeedTxtV.text = weatherData.current.windSpeed.toString()
+        windSpeedTxtV.text = SpeedUnitConverter.metersPerSecondToMilesPerHour(
+            weatherData.current.windSpeed,
+            SpeedUnitConverter.getUnitFromKey(
+                requireContext(),
+                AppPreferencesManagerValues.windSpeed
+            )
+        ).toString().addSpeedUnit(
+            SpeedUnitConverter.getUnitFromKey(
+                requireContext(),
+                AppPreferencesManagerValues.windSpeed
+            )
+        )
         visibilityTxtV.text = weatherData.current.visibility.toString()
         ultraVioletTxtV.text = weatherData.current.uvIndex.toString()
         locationName.text = weatherData.timezone.split("/").last()
@@ -165,7 +151,12 @@ class HomeScreen : Fragment() {
             value = weatherData.current.temperature,
             context = requireContext(),
             targetUnitKey = AppPreferencesManagerValues.tempUnit
-        ).toInt().toString().addDegreeSymbol()
+        ).toInt().toString().addDegreeSymbol(
+            Temperature.getUnitFromKey(
+                requireContext(),
+                AppPreferencesManagerValues.tempUnit
+            )
+        )
         weatherStatusImg.setImageResource(WeatherHandlingHelper.getWeatherImage(weatherData.current))
         val description = weatherData.current.weather.first().description
         val capitalizedDescription = description.split(" ").joinToString(" ") { word ->
@@ -187,7 +178,6 @@ class HomeScreen : Fragment() {
     }
 
     private fun viewModelSetup() {
-
         val homeScreenViewModelFactory = HomeScreenViewModelFactory(
             DataSourceRepositoryImpl.getInstance(
                 LocalDataSourceImpl.getInstance(requireContext()),
@@ -247,8 +237,6 @@ class HomeScreen : Fragment() {
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        Log.i("Permissions", "onRequestPermissionsResult: ${grantResults[0]}")
-//        Log.i("Permissions", "onRequestPermissionsResult: $requestCode")
         if (requestCode == REQUEST_LOCATION_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 checkAndEnableLocation()

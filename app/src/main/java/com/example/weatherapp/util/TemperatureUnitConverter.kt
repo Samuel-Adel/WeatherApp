@@ -49,7 +49,7 @@ object Temperature {
         }
     }
 
-    private fun getUnitFromKey(context: Context, key: String?): TemperatureUnit {
+     fun getUnitFromKey(context: Context, key: String?): TemperatureUnit {
         return when (key) {
             context.getString(R.string.celsius_key) -> TemperatureUnit.CELSIUS
             context.getString(R.string.fahrenheit_key) -> TemperatureUnit.FAHRENHEIT

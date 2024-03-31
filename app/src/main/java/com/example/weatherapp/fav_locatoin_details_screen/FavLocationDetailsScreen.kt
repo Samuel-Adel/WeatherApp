@@ -1,12 +1,12 @@
 package com.example.weatherapp.fav_locatoin_details_screen
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -25,9 +25,11 @@ import com.example.weatherapp.model.WeatherData
 import com.example.weatherapp.network.RemoteDataSourceImpl
 import com.example.weatherapp.util.AppPreferencesManagerValues
 import com.example.weatherapp.util.DataSourceState
+import com.example.weatherapp.util.SpeedUnitConverter
 import com.example.weatherapp.util.Temperature
 import com.example.weatherapp.util.WeatherHandlingHelper
 import com.example.weatherapp.util.addDegreeSymbol
+import com.example.weatherapp.util.addSpeedUnit
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -106,7 +108,18 @@ class FavLocationDetailsScreen : AppCompatActivity() {
         pressureTxtV.text = weatherData.current.pressure.toString()
         humidityTxtV.text = weatherData.current.humidity.toString()
         cloudsTxtV.text = weatherData.current.clouds.toString()
-        windSpeedTxtV.text = weatherData.current.windSpeed.toString()
+        windSpeedTxtV.text = SpeedUnitConverter.metersPerSecondToMilesPerHour(
+            weatherData.current.windSpeed,
+            SpeedUnitConverter.getUnitFromKey(
+                this,
+                AppPreferencesManagerValues.windSpeed
+            )
+        ).toString().addSpeedUnit(
+            SpeedUnitConverter.getUnitFromKey(
+                this,
+                AppPreferencesManagerValues.windSpeed
+            )
+        )
         visibilityTxtV.text = weatherData.current.visibility.toString()
         ultraVioletTxtV.text = weatherData.current.uvIndex.toString()
         if (name == null) {
@@ -119,7 +132,12 @@ class FavLocationDetailsScreen : AppCompatActivity() {
             value = weatherData.current.temperature,
             context = this,
             targetUnitKey = AppPreferencesManagerValues.tempUnit
-        ).toInt().toString().addDegreeSymbol()
+        ).toInt().toString().addDegreeSymbol(
+            Temperature.getUnitFromKey(
+                this,
+                AppPreferencesManagerValues.tempUnit
+            )
+        )
         weatherStatusImg.setImageResource(WeatherHandlingHelper.getWeatherImage(weatherData.current))
         val description = weatherData.current.weather.first().description
         val capitalizedDescription = description.split(" ").joinToString(" ") { word ->

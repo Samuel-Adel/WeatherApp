@@ -13,7 +13,6 @@ data class AlarmItem(
     @ColumnInfo(name = "time")
     val time: LocalDateTime,
     @ColumnInfo(name = "latitude")
-
     val latitude: Double,
     @ColumnInfo(name = "longitude")
 
