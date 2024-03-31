@@ -17,6 +17,7 @@ import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -55,7 +56,7 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 
 @Suppress("DEPRECATION")
-class HomeScreen : Fragment(), OnMapReadyCallback {
+class HomeScreen : Fragment() {
     private lateinit var refresher: SwipeRefreshLayout
     private lateinit var homeScreenHourlyWeatherAdapter: HourlyWeatherAdapter
     private lateinit var homeScreenDailyWeatherAdapter: DaysWeatherAdapter
@@ -68,11 +69,16 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
     private lateinit var weatherStatus: TextView
     private lateinit var weatherStatusImg: ImageView
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private var mGoogleMap: GoogleMap? = null
-    private lateinit var geocoder: Geocoder
     private var lat: Double? = null
     private var lon: Double? = null
     private var loaded: Boolean = false
+    private lateinit var weatherAttributesCard: CardView
+    private lateinit var pressureTxtV: TextView
+    private lateinit var humidityTxtV: TextView
+    private lateinit var cloudsTxtV: TextView
+    private lateinit var windSpeedTxtV: TextView
+    private lateinit var visibilityTxtV: TextView
+    private lateinit var ultraVioletTxtV: TextView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -123,6 +129,13 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
     }
 
     private fun uiSetup(view: View) {
+        pressureTxtV = view.findViewById(R.id.txtVPressureValue)
+        humidityTxtV = view.findViewById(R.id.txtVHumidityValue)
+        cloudsTxtV = view.findViewById(R.id.txtVCloudsValue)
+        windSpeedTxtV = view.findViewById(R.id.txtVWindSpeedValue)
+        visibilityTxtV = view.findViewById(R.id.txtVVisibilityValue)
+        ultraVioletTxtV = view.findViewById(R.id.txtVUltraVioletValue)
+        weatherAttributesCard = view.findViewById(R.id.cardViewWeatherAttributes)
         hourlyWeatherRV = view.findViewById(R.id.rvHourlyWeather)
         daysWeatherRV = view.findViewById(R.id.rvDaysWeather)
         progressBar = view.findViewById(R.id.lottieAnimationLoading)
@@ -139,6 +152,14 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
     }
 
     private fun updateTxtView(weatherData: WeatherData) {
+        homeScreenViewModel.saveWeatherDataLocally(weatherData)
+        weatherAttributesCard.visibility = View.VISIBLE
+        pressureTxtV.text = weatherData.current.pressure.toString()
+        humidityTxtV.text = weatherData.current.humidity.toString()
+        cloudsTxtV.text = weatherData.current.clouds.toString()
+        windSpeedTxtV.text = weatherData.current.windSpeed.toString()
+        visibilityTxtV.text = weatherData.current.visibility.toString()
+        ultraVioletTxtV.text = weatherData.current.uvIndex.toString()
         locationName.text = weatherData.timezone.split("/").last()
         temperature.text = Temperature.convertTo(
             value = weatherData.current.temperature,
@@ -213,6 +234,7 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
                         ).show()
                         refresher.isRefreshing = false
                         progressBar.visibility = View.GONE
+                        homeScreenViewModel.getLocalWeatherData()
                     }
 
                 }
@@ -279,48 +301,5 @@ class HomeScreen : Fragment(), OnMapReadyCallback {
         }
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        mGoogleMap = googleMap
-        val cairo = LatLng(30.0444, 31.2357)
-        mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(cairo, 10f))
-        mGoogleMap?.setOnMapClickListener { latLng ->
-            Log.i("Google MAps", "Clicked: ")
-            addMarker(latLng)
-
-        }
-    }
-
-    private fun addMarker(latLng: LatLng) {
-        mGoogleMap?.clear()
-        getAddressFromCoordinates(latLng.latitude, latLng.longitude) {
-            mGoogleMap?.addMarker(
-                MarkerOptions()
-                    .position(latLng)
-                    .title(it)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.flag_marker))
-                    .draggable(true)
-            )
-        }
-    }
-
-    private fun getAddressFromCoordinates(
-        latitude: Double,
-        longitude: Double,
-        callback: (String) -> Unit
-    ) {
-        try {
-            val addresses: List<Address>? = geocoder.getFromLocation(latitude, longitude, 1)
-            if (!addresses.isNullOrEmpty()) {
-                val address = addresses[0]
-                val addressText = address.getAddressLine(0)
-                callback(addressText)
-            } else {
-                Log.i("Google MAps", "No address found for the provided location")
-            }
-        } catch (e: IOException) {
-            Log.i("Google MAps", "Error fetching address: ${e.message}")
-        }
-
-    }
 
 }

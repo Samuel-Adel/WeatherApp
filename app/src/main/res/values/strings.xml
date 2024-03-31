@@ -15,6 +15,9 @@
     <string name="default_temp">No°C</string>
     <string name="default_lat">30.0444</string>
     <string name="default_lon">31.2357</string>
+    <string name="lon">lon</string>
+    <string name="lat">lat</string>
+    <string name="name">name</string>
     <string name="wrong_data_submitted">Wrong data submitted</string>
     <string name="weather_status_image">Weather status image</string>
     <string name="temperature_placeholder">%d°</string>
@@ -76,6 +79,12 @@
     <string name="hybrid_map">Hybrid Map</string>
     <string name="satellite_map">Satellite Map</string>
     <string name="terrain_map">Terrain Map</string>
+    <string name="pressure">Pressure</string>
+    <string name="clouds">Clouds</string>
+    <string name="wind_speed">Wind Speed</string>
+    <string name="humidity">Humidity</string>
+    <string name="ultra_violet">Ultra Violet</string>
+    <string name="visibility">Visibility</string>
 
 
 </resources>

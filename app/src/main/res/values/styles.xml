@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CustomDatePickerDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="colorPrimary">#3A3A6A</item>
+        <item name="colorPrimaryDark">#3A3A6A</item>
+        <item name="colorAccent">#3A3A6A</item>
+    </style>
+
+    <style name="CustomTimePickerDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="colorPrimary">#3A3A6A</item>
+        <item name="colorPrimaryDark">#3A3A6A</item>
+        <item name="colorAccent">#3A3A6A</item>
+    </style>
+</resources>

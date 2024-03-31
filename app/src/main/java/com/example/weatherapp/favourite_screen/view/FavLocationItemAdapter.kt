@@ -11,7 +11,10 @@ import com.example.weatherapp.databinding.FavLocatoinItemBinding
 import com.example.weatherapp.model.FavouriteLocation
 
 
-class FavLocationItemAdapter(private val onItemClick: (FavouriteLocation) -> Unit) :
+class FavLocationItemAdapter(
+    private val onItemClick: (FavouriteLocation) -> Unit,
+    private val onDeleteClicked: (FavouriteLocation) -> Unit
+) :
     ListAdapter<FavouriteLocation, FavLocationItemAdapter.FavouriteLocationViewHolder>(
         FavouriteLocationDiffUtil()
     ) {
@@ -26,7 +29,8 @@ class FavLocationItemAdapter(private val onItemClick: (FavouriteLocation) -> Uni
     override fun onBindViewHolder(holder: FavouriteLocationViewHolder, position: Int) {
         val currentLocation = getItem(position)
         holder.binding.favLocationModel = currentLocation
-        binding.imgVDeleteFavLocation.setOnClickListener { onItemClick.invoke(currentLocation) }
+        binding.imgVDeleteFavLocation.setOnClickListener { onDeleteClicked.invoke(currentLocation) }
+        binding.root.setOnClickListener { onItemClick.invoke(currentLocation) }
     }
 
     inner class FavouriteLocationViewHolder(val binding: FavLocatoinItemBinding) :

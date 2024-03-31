@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/alarmScreen"
-        android:name="com.example.weatherapp.alarm_screen.AlarmScreen"
+        android:name="com.example.weatherapp.alarm_screen.view.AlarmScreen"
         android:label="@string/alarm_screen"
         tools:layout="@layout/fragment_alarm_screen" />
     <fragment
