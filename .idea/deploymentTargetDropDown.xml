@@ -2,7 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="WeatherDaoTest">
+      <entry key="LocalDataSourceImplTest">
         <State />
       </entry>
       <entry key="app">
@@ -29,13 +29,19 @@
           </runningDeviceTargetsSelectedWithDialog>
         </State>
       </entry>
-      <entry key="saveAlarm_retrievesAlarm()">
+      <entry key="deleteAlarmAlert()">
         <State />
       </entry>
-      <entry key="saveFavLocation_retrievesFavLocation()">
+      <entry key="deleteAlarmAlert() (1)">
         <State />
       </entry>
-      <entry key="saveWeatherData_retrievesWeatherData()">
+      <entry key="deleteFavLocation_deletesFavLocationCorrectly()">
+        <State />
+      </entry>
+      <entry key="insertAlarmAlert()">
+        <State />
+      </entry>
+      <entry key="insertAlarmAlert() (1)">
         <State />
       </entry>
     </value>

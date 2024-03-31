@@ -64,6 +64,7 @@ dependencies {
     //Room
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("androidx.room:room-runtime:2.6.1")
+    androidTestImplementation(project(":app"))
     kapt("androidx.room:room-compiler:2.6.1")
     //Coroutine
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")

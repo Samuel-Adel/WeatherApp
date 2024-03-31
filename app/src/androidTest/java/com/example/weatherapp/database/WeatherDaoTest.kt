@@ -1,10 +1,9 @@
-package com.example.weatherapp.local_data_source
+package com.example.weatherapp.database
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.filters.SmallTest
-import com.example.weatherapp.database.WeatherDatabase
 import com.example.weatherapp.model.AlarmItem
 import com.example.weatherapp.model.FavouriteLocation
 import com.example.weatherapp.model.WeatherEntity

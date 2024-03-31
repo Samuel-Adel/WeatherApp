@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 
 class LocalDataSourceImpl private constructor(context: Context) : ILocalDataSource {
+
     companion object {
         @Volatile
         private var instance: LocalDataSourceImpl? = null
