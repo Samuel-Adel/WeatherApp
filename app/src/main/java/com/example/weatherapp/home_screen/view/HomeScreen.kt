@@ -152,6 +152,7 @@ class HomeScreen : Fragment() {
     }
 
     private fun updateTxtView(weatherData: WeatherData) {
+        homeScreenViewModel.saveWeatherDataLocally(weatherData)
         weatherAttributesCard.visibility = View.VISIBLE
         pressureTxtV.text = weatherData.current.pressure.toString()
         humidityTxtV.text = weatherData.current.humidity.toString()
@@ -233,6 +234,7 @@ class HomeScreen : Fragment() {
                         ).show()
                         refresher.isRefreshing = false
                         progressBar.visibility = View.GONE
+                        homeScreenViewModel.getLocalWeatherData()
                     }
 
                 }
@@ -298,7 +300,6 @@ class HomeScreen : Fragment() {
             getFreshLocation()
         }
     }
-
 
 
 }
