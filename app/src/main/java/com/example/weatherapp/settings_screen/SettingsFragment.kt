@@ -1,5 +1,6 @@
 package com.example.weatherapp.settings_screen
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -7,6 +8,7 @@ import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.example.weatherapp.R
+import com.example.weatherapp.google_map.GoogleMapScreen
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -35,35 +37,30 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
-        // Set onChange listener for locationPreference
         locationPreference?.setOnPreferenceChangeListener { preference, newValue ->
             Log.i("Pref", "onViewCreated: " + preference + " " + newValue)
+            if (newValue == resources.getString(R.string.map_key)) {
+                val intent = Intent(requireContext(), GoogleMapScreen::class.java)
+                intent.putExtra("extra_key", "settings")
+                startActivity(intent)
+            }
+            true
 
-            // Do something when the preference value changes
-            true // Return true to update the preference value
         }
 
-        // Set onChange listener for tempUnitPreference
         tempUnitPreference?.setOnPreferenceChangeListener { preference, newValue ->
             Log.i("Pref", "onViewCreated: " + preference + " " + newValue)
             applyChanges()
-            // Do something when the preference value changes
-            true // Return true to update the preference value
         }
 
-        // Set onChange listener for speedUnitPreference
         speedUnitPreference?.setOnPreferenceChangeListener { preference, newValue ->
             Log.i("Pref", "onViewCreated: " + preference + " " + newValue)
-
-            // Do something when the preference value changes
-            true // Return true to update the preference value
+            applyChanges()
         }
 
-        // Set onChange listener for notificationPreference
         notificationPreference?.setOnPreferenceChangeListener { preference, newValue ->
             Log.i("Pref", "onViewCreated: " + preference + " " + newValue)
 
-            // Do something when the preference value changes
             true // Return true to update the preference value
         }
     }

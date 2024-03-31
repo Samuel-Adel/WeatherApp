@@ -1,0 +1,91 @@
+<resources>
+    <string name="app_name">سماء</string>
+    <!-- TODO: إزالة أو تغيير هذا النص العلامة المكانية -->
+    <string name="hello_blank_fragment">مرحبًا بالشاشة الفارغة</string>
+    <string name="alarm_screen">شاشة التنبيه</string>
+    <string name="home_screen">شاشة الصفحة الرئيسية</string>
+    <string name="settings_screen">شاشة الإعدادات</string>
+    <string name="favourite_screen">شاشة المفضلة</string>
+    <string name="google_map_screen">شاشة خريطة جوجل</string>
+    <string name="settings">الإعدادات</string>
+    <string name="favourite">المفضلة</string>
+    <string name="home">الصفحة الرئيسية</string>
+    <string name="alarm">التنبيهات</string>
+    <string name="unknown">غير معروف</string>
+    <string name="default_temp">لا يوجد°C</string>
+    <string name="default_lat">30.0444</string>
+    <string name="default_lon">31.2357</string>
+    <string name="lon">خط الطول</string>
+    <string name="lat">خط العرض</string>
+    <string name="name">الاسم</string>
+    <string name="wrong_data_submitted">تم إرسال بيانات خاطئة</string>
+    <string name="weather_status_image">صورة حالة الطقس</string>
+    <string name="temperature_placeholder">%d°</string>
+    <string name="ThreeLetters">APC</string>
+    <string name="gps">نظام تحديد المواقع</string>
+    <string name="map">الخريطة</string>
+    <string name="submit">تاكيد</string>
+    <string name="location">الموقع</string>
+    <string name="initial_setup">الإعداد الأولي</string>
+    <string name="pls_turn_on_location">يرجى تفعيل موقعك</string>
+    <string name="this_location_does_not_contain_data">تحقق من اتصالك بالإنترنت!</string>
+    <string name="google_map_api_key">AIzaSyB2gt1Kmpv4xdodCM13OROMOlJmXQfGNM0</string>
+    <string name="add_fav_locatoin">إضافة موقع مفضل</string>
+
+    <!-- Preference Keys -->
+    <string name="language_key">language_key</string>
+    <string name="temp_unit_key">temp_unit_key</string>
+    <string name="speed_unit_key">speed_unit_key</string>
+    <string name="location_key">location_key</string>
+    <string name="notification_key">notification_key</string>
+    <!-- Preference Titles -->
+    <string name="weather">الرسائل</string>
+    <string name="app_settings">إعدادات التطبيق</string>
+    <string name="weather_settings">إعدادات الطقس</string>
+    <string name="notification">الإشعارات</string>
+    <string name="notification_settings">إعدادات الإشعارات</string>
+    <string name="allow_notifications">السماح للتطبيق بإرسال الإشعارات</string>
+    <string name="notification_allowed">الإشعار مسموح به</string>
+
+    <!-- Preference Messages -->
+    <string name="language">اللغة</string>
+    <string name="ar">عربى</string>
+    <string name="en">English</string>
+    <string name="ar_key">ar</string>
+    <string name="en_key">en</string>
+
+
+    <string name="temp_unit">وحدة الحرارة</string>
+    <string name="celsius">رجة مئوية</string>
+    <string name="fahrenheit">فهرنهايت</string>
+    <string name="kelvin">كلفن</string>
+
+    <string name="celsius_key">celsius_key</string>
+    <string name="fahrenheit_key">fahrenheit_key</string>
+    <string name="kelvin_key">kelvin_key</string>
+
+    <string name="speed_unit">وحدة السرعة</string>
+    <string name="meter_second">متر/ثانية</string>
+    <string name="miles_hour">ميل/ساعة</string>
+
+    <string name="meter_second_key">meter_second_key</string>
+    <string name="miles_hour_key">miles_hour_key</string>
+
+    <string name="gps_key">gps_key</string>
+    <string name="map_key">map_key</string>
+
+    <string name="add">إضافة</string>
+    <string name="menu_map_option">خيارات القائمة للخريطة</string>
+    <string name="normal_map">خريطة عادية</string>
+    <string name="hybrid_map">خريطة هجينة</string>
+    <string name="satellite_map">خريطة الأقمار الصناعية</string>
+    <string name="terrain_map">خريطة التضاريس</string>
+    <string name="pressure">الضغط</string>
+    <string name="clouds">السحب</string>
+    <string name="wind_speed">سرعة الرياح</string>
+    <string name="humidity">الرطوبة</string>
+    <string name="ultra_violet">الأشعة فوق البنفسجية</string>
+    <string name="visibility">الرؤية</string>
+
+
+</resources>
