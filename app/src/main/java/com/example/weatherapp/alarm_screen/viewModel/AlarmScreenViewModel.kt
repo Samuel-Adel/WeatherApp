@@ -25,7 +25,7 @@ class AlarmScreenViewModel(
         getAlarms()
     }
 
-    private fun getAlarms() =
+    fun getAlarms() =
         viewModelScope.launch(Dispatchers.IO) {
             Log.i("GetAlarms", "getAlarms: called")
             repo.getAlarmsList().collect {

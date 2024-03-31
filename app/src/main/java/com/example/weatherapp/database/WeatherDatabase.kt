@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter
 @TypeConverters(LocalDateTimeConverter::class)
 
 abstract class WeatherDatabase : RoomDatabase() {
-    abstract fun getProductDao(): WeatherDao
+    abstract fun getWeatherDao(): WeatherDao
 
     companion object {
         @Volatile

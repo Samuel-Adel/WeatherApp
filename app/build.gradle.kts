@@ -64,6 +64,7 @@ dependencies {
     //Room
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("androidx.room:room-runtime:2.6.1")
+    androidTestImplementation(project(":app"))
     kapt("androidx.room:room-compiler:2.6.1")
     //Coroutine
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
@@ -90,7 +91,7 @@ dependencies {
     testImplementation("org.robolectric:robolectric:4.8")
 
     // AndroidX Test - JVM testing
-    testImplementation("androidx.test:core-ktx:1.4.0")
+    testImplementation("androidx.test:core-ktx:1.5.0")
     //testImplementation("androidx.test.ext:junit:1.1.3")
 
 // AndroidX Test - Instrumented testing
@@ -102,9 +103,9 @@ dependencies {
 
 // hamcrest
     testImplementation("org.hamcrest:hamcrest:2.2")
-    testImplementation("org.hamcrest:hamcrest-library:1.3")
-    androidTestImplementation("org.hamcrest:hamcrest:1.3")
-    androidTestImplementation("org.hamcrest:hamcrest-library:1.3")
+    testImplementation("org.hamcrest:hamcrest-library:2.2")
+    androidTestImplementation("org.hamcrest:hamcrest:2.2")
+    androidTestImplementation("org.hamcrest:hamcrest-library:2.2")
 
 // AndroidX and Robolectric
     testImplementation("androidx.test.ext:junit-ktx:1.1.3")

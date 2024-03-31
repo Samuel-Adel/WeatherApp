@@ -151,6 +151,7 @@ class HomeScreen : Fragment() {
             value = weatherData.current.temperature,
             context = requireContext(),
             targetUnitKey = AppPreferencesManagerValues.tempUnit
+
         ).toInt().toString().addDegreeSymbol(
             Temperature.getUnitFromKey(
                 requireContext(),

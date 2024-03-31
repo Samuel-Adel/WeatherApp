@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.example.weatherapp.model.AlarmItem
 
 
 class AlarmReceiver : BroadcastReceiver() {
@@ -16,7 +15,7 @@ class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         val message = intent?.getSerializableExtra("myObject")
         Log.i("Alarm", "onReceive: $message")
-        showNotification(context, "Samuel Adel")
+        showNotification(context, "Clear Sky")
     }
 
     private fun showNotification(context: Context?, message: String) {
